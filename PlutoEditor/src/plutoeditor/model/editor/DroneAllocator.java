@@ -1,6 +1,7 @@
 package plutoeditor.model.editor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import plutoeditor.model.classes.Mission;
 import plutoeditor.model.classes.Drone;
@@ -9,7 +10,7 @@ public class DroneAllocator extends Node {
 
 	@Override
 	public Mission run(Mission m) {
-		ArrayList<Drone> availableDrones = new ArrayList<Drone>(); // =getAvailableDrones()
+		List<Drone> availableDrones = new ArrayList<Drone>(); // =getAvailableDrones()
 		// if there is at least a trip to perform in the mission
 		if (!m.getTrips().isEmpty()) {
 			for (Drone d : availableDrones) {

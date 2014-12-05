@@ -4,9 +4,9 @@ package plutoeditor.model.classes;
 
 public class Trip {
 	
-	private static final int WAITING = 1;
-	private static final int COMPLETED = 2;
-	static final int FAILED = 3;
+	public static final int WAITING = 1;
+	public static final int COMPLETED = 2;
+	public static final int FAILED = 3;
 
 	private String sourceLocation;
 	private String targetLocation;
@@ -15,12 +15,12 @@ public class Trip {
 	private int status;
 	private Drone drone;
 	private Item item;
-	
 	private String startTime;
 		
 	public Trip() {
 		this.delay=0;
 		this.priority=100;
+		this.status = WAITING;
 	}
 
 	public String getSourceLocation() {

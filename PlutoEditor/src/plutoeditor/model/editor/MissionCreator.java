@@ -13,7 +13,7 @@ public class MissionCreator extends Node {
 
 		Mission m = new Mission();
 		m.setTrips(trips);
-		m.setStatus(1);
+		m.setStatus(Mission.UNEXECUTED);
 
 		return m;
 

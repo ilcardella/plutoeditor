@@ -1,26 +1,28 @@
 package plutoeditor.model.classes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
 
 public class Mission {
 	
-	private static final int UNEXECUTED = 1;
-	private static final int RUNNING = 2;
-	private static final int COMPLETED = 3;
-	private static final int FAILED = 4;
-	private static final int STANDBY = 5;
+	public static final int UNEXECUTED = 1;
+	public static final int RUNNING = 2;
+	public static final int COMPLETED = 3;
+	public static final int FAILED = 4;
+	public static final int STANDBY = 5;
 
 	private int  id;
 	private int status;
-	private ArrayList<Trip> trips;
+	private List<Trip> trips;
 
 	public Mission() {
 
 		this.id= new Random(1000).nextInt();
-		this.status=1;
+		this.status= UNEXECUTED;
+		this.trips = new ArrayList<Trip>();
 
 	}
 
@@ -40,11 +42,11 @@ public class Mission {
 		this.status = status;
 	}
 
-	public ArrayList<Trip> getTrips() {
+	public List<Trip> getTrips() {
 		return trips;
 	}
 
-	public void setTrips(ArrayList<Trip> trips) {
+	public void setTrips(List<Trip> trips) {
 		this.trips = trips;
 	}
 
