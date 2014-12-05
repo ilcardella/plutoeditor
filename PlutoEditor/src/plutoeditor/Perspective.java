@@ -11,6 +11,5 @@ public class Perspective implements IPerspectiveFactory {
 
 		layout.addView(IPageLayout.ID_OUTLINE,
 				IPageLayout.LEFT, 0.3f, layout.getEditorArea());
-
 	}
 }
