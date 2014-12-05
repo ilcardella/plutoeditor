@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PlutoEditor
+Bundle-SymbolicName: PlutoEditor;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: plutoeditor.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.gef;bundle-version="3.9.100",
+ org.eclipse.gef.doc.isv;bundle-version="3.9.100",
+ org.eclipse.gef.examples.ui.pde;bundle-version="3.8.1",
+ org.eclipse.ui.views;bundle-version="3.7.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
