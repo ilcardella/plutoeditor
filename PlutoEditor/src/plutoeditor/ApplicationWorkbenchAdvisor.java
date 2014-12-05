@@ -1,11 +1,9 @@
 package plutoeditor;
 
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -41,13 +39,12 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 					page.openEditor(new MyEditorInput("PlutoEditor"),
 							MyGraphicalEditor.ID, false);
 					page.showView(IPageLayout.ID_OUTLINE);
-					
 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
 
+	}
 }

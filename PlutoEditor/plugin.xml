@@ -24,7 +24,7 @@
       <editor
             class="plutoeditor.editor.MyGraphicalEditor"
             contributorClass="plutoeditor.MyGraphicalEditorActionBarContributor"
-            default="true"
+            default="false"
             extensions="dgm"
             id="plutoeditor.mygraphicaleditor"
             name="MyGraphicalEditor">
