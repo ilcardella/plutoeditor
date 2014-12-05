@@ -40,6 +40,8 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 					page.openEditor(new MyEditorInput("PlutoEditor"),
 							MyGraphicalEditor.ID, false);
+					page.showView(IPageLayout.ID_OUTLINE);
+					
 
 				} catch (Exception e) {
 					e.printStackTrace();

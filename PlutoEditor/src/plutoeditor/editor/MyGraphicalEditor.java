@@ -8,6 +8,7 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
@@ -210,6 +211,8 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 					.getRootEditPart()).getZoomManager();
 		} else if (type == IContentOutlinePage.class) {
 			return new OutlinePage();
+		} else if( type == Diagram.class){
+			return model;
 		}
 		return super.getAdapter(type);
 	}
@@ -222,6 +225,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		IAction action = new RenameAction(this);
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
+		
+		action = new GenerateCodeAction(this);
+		registry.registerAction(action);
 	}
 
 	// Nested class for the outline view

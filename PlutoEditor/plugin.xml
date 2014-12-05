@@ -15,7 +15,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="plutoeditor.Perspective"
-            id="PlutoEditor.perspective"
+            id="PlutoEditor"
             name="RCPPerspective">
       </perspective>
    </extension>

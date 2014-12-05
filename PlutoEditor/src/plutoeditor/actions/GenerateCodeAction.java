@@ -14,6 +14,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.IEditorPart;
 
 import plutoeditor.commands.generation.GenerateCodeCommand;
+import plutoeditor.editpart.DiagramEditPart;
 import plutoeditor.model.editor.Diagram;
 
 public class GenerateCodeAction extends EditorPartAction {
@@ -22,17 +23,17 @@ public class GenerateCodeAction extends EditorPartAction {
 	
 	public GenerateCodeAction(IEditorPart editor) {
 		super(editor);
-		setText("Generate");
+		setText("Generate Code");
 		setId(GENERATE_CODE_ID);
 		setToolTipText("Generate code from diagram");
-		setImageDescriptor(new ImageDescriptor() {
-
-			@Override
-			public ImageData getImageData() {
-				ImageData img = new ImageData("icons/generate-icon.ico");
-				return img;
-			}
-		});
+//		setImageDescriptor(new ImageDescriptor() {
+//
+//			@Override
+//			public ImageData getImageData() {
+//				ImageData img = new ImageData("~/icons/generate-icon.ico");
+//				return img;
+//			}
+//		});
 	}
 
 	@Override
@@ -42,19 +43,16 @@ public class GenerateCodeAction extends EditorPartAction {
 
 	@Override
 	public void run() {
-		EditPartViewer viewer = (EditPartViewer) getEditorPart().getAdapter(
-				EditPartViewer.class);
-		EditPart target = viewer.getContents();
 
 		CreateRequest createReq = new CreateRequest();
 		HashMap<String, Diagram> dataMap = new HashMap<String, Diagram>();
-		dataMap.put("diagram", (Diagram) target.getModel());
+		
+		dataMap.put("diagram", (Diagram) getEditorPart().getAdapter(Diagram.class));
+		
 		createReq.setExtendedData(dataMap);
 
 		GenerateCodeCommand command = new GenerateCodeCommand(createReq);
-		if (command != null && command.canExecute()) {
-			viewer.getEditDomain().getCommandStack().execute(command);
-		}
+		execute(command);
 
 	}
 

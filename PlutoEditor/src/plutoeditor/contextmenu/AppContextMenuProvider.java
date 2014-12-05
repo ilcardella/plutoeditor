@@ -8,6 +8,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.actions.ActionFactory;
 
+import plutoeditor.actions.GenerateCodeAction;
+
 public class AppContextMenuProvider extends ContextMenuProvider {
 
 	private ActionRegistry actionRegistry;
@@ -28,6 +30,9 @@ public class AppContextMenuProvider extends ContextMenuProvider {
 		action = getActionRegistry().getAction(ActionFactory.DELETE.getId());
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 		action = getActionRegistry().getAction(ActionFactory.RENAME.getId());
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		
+		action = getActionRegistry().getAction(GenerateCodeAction.GENERATE_CODE_ID);
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 	}
 

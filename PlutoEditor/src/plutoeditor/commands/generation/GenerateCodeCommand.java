@@ -4,6 +4,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateRequest;
 
 import plutoeditor.model.editor.Diagram;
+import plutoeditor.model.editor.Node;
 
 public class GenerateCodeCommand extends Command {
 
@@ -18,8 +19,7 @@ public class GenerateCodeCommand extends Command {
 		// TODO Implementation
 		if (model != null)
 			System.out.println("Hello GEF!");
-		else
-			System.out.println("Mannaggiaaddiocristoimpalato");
+		
 		super.execute();
 	}
 }
