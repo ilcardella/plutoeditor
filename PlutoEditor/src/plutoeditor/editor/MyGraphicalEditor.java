@@ -1,6 +1,7 @@
 package plutoeditor.editor;
 
 import java.util.ArrayList;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.Viewport;
@@ -25,6 +26,7 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
@@ -42,6 +44,7 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
 import plutoeditor.actions.GenerateCodeAction;
 import plutoeditor.actions.RenameAction;
 import plutoeditor.contextmenu.AppContextMenuProvider;
@@ -215,6 +218,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		getSelectionActions().add(action.getId());
 
 		action = new GenerateCodeAction(this);
+		registry.registerAction(action);
+		
+		action = new SaveAction(this);
 		registry.registerAction(action);
 	}
 
