@@ -3,6 +3,7 @@ package plutoeditor.commands.generation;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.CreateRequest;
 
+import plutoeditor.generator.MyGeneratorTemplate;
 import plutoeditor.model.editor.Diagram;
 import plutoeditor.model.editor.Node;
 
@@ -16,10 +17,8 @@ public class GenerateCodeCommand extends Command {
 
 	@Override
 	public void execute() {
-		// TODO Implementation
-		if (model != null)
-			System.out.println("Hello GEF!");
-		
+		MyGeneratorTemplate generator = new MyGeneratorTemplate(model);
+		generator.generate();
 		super.execute();
 	}
 }
