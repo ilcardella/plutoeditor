@@ -1,7 +1,19 @@
 package plutoeditor.editor;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.EventObject;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.Viewport;
@@ -35,6 +47,7 @@ import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
 import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
@@ -42,14 +55,19 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.ui.IFileEditorInput;
 
 import plutoeditor.actions.GenerateCodeAction;
 import plutoeditor.actions.RenameAction;
@@ -84,7 +102,7 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 
 		PaletteRoot root = new PaletteRoot();
 
-		//PaletteGroup manipGroup = new PaletteGroup("Manipulation");
+		// PaletteGroup manipGroup = new PaletteGroup("Manipulation");
 		PaletteDrawer manipGroup = new PaletteDrawer("Blocks Elements");
 		root.add(manipGroup);
 		SelectionToolEntry selectionToolEntry = new SelectionToolEntry();
@@ -94,7 +112,7 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		PaletteSeparator sep2 = new PaletteSeparator();
 		root.add(sep2);
 
-		//PaletteGroup instGroup = new PaletteGroup("Creation");
+		// PaletteGroup instGroup = new PaletteGroup("Creation");
 		PaletteDrawer instGroup = new PaletteDrawer("Blocks Elements");
 		root.add(instGroup);
 		instGroup.add(new CombinedTemplateCreationEntry("Clock",
@@ -128,23 +146,19 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		instGroup.add(new CombinedTemplateCreationEntry("Trip Monitor",
 				"Create a trip monitor block", TripMonitor.class,
 				new NodeCreationFactory(TripMonitor.class), null, null));
-		
-		PaletteDrawer connectionElements = new PaletteDrawer("Connecting Elements"); 
+
+		PaletteDrawer connectionElements = new PaletteDrawer(
+				"Connecting Elements");
 		root.add(connectionElements);
-        connectionElements.add(new ConnectionCreationToolEntry("Connection","Create Connections",
-                new ConnectionCreationFactory(Connection.class),
-                null,
-                null));
+		connectionElements.add(new ConnectionCreationToolEntry("Connection",
+				"Create Connections", new ConnectionCreationFactory(
+						Connection.class), null, null));
 
 		root.setDefaultEntry(selectionToolEntry);
 		return root;
 	}
 
-	@Override
-	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	protected void configureGraphicalViewer() {
 
@@ -191,6 +205,7 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	}
 
 	protected void initializeGraphicalViewer() {
+		
 		GraphicalViewer viewer = getGraphicalViewer();
 		model = new Diagram();
 		viewer.setContents(model);
@@ -211,7 +226,7 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 					.getRootEditPart()).getZoomManager();
 		} else if (type == IContentOutlinePage.class) {
 			return new OutlinePage();
-		} else if( type == Diagram.class){
+		} else if (type == Diagram.class) {
 			return model;
 		}
 		return super.getAdapter(type);
@@ -221,15 +236,28 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	public void createActions() {
 		super.createActions();
 		ActionRegistry registry = getActionRegistry();
-		
+
 		IAction action = new RenameAction(this);
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
-		
+
 		action = new GenerateCodeAction(this);
 		registry.registerAction(action);
 	}
 
+	@Override
+	public void doSave(IProgressMonitor monitor) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void doSaveAs() {
+		// TODO Auto-generated method stub
+		super.doSaveAs();
+	}
+	
+	
 	// Nested class for the outline view
 	protected class OutlinePage extends ContentOutlinePage {
 		private SashForm sash;
