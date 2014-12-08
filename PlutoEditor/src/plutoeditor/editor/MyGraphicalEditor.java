@@ -1,6 +1,7 @@
 package plutoeditor.editor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.LightweightSystem;
@@ -24,9 +25,9 @@ import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
+import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
@@ -41,12 +42,16 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import plutoeditor.actions.GenerateCodeAction;
+import plutoeditor.actions.LoadDiagramAction;
 import plutoeditor.actions.RenameAction;
+import plutoeditor.actions.SaveDiagramAction;
+import plutoeditor.commands.save.SaveDiagramCommand;
 import plutoeditor.contextmenu.AppContextMenuProvider;
 import plutoeditor.creationfactory.NodeCreationFactory;
 import plutoeditor.editpart.AppEditPartFactory;
@@ -71,6 +76,14 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 
 	public MyGraphicalEditor() {
 		setEditDomain(new DefaultEditDomain(this));
+	}
+	
+
+	public void setLoadedModel(Diagram newModel) {
+		model = newModel;
+		GraphicalViewer viewer = getGraphicalViewer();
+		viewer.setContents(model);
+		
 	}
 
 	@Override
@@ -134,8 +147,6 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		return root;
 	}
 
-	
-
 	protected void configureGraphicalViewer() {
 
 		double[] zoomLevels;
@@ -180,8 +191,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 
 	}
 
+	@Override
 	protected void initializeGraphicalViewer() {
-		
+
 		GraphicalViewer viewer = getGraphicalViewer();
 		model = new Diagram();
 		viewer.setContents(model);
@@ -220,23 +232,30 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		action = new GenerateCodeAction(this);
 		registry.registerAction(action);
 		
-		action = new SaveAction(this);
+		action = new SaveDiagramAction(this);
+		registry.registerAction(action);
+		
+		action = new LoadDiagramAction(this);
 		registry.registerAction(action);
 	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
+		CreateRequest createReq = new CreateRequest();
+		HashMap<String, Diagram> dataMap = new HashMap<String, Diagram>();
 		
+		dataMap.put("diagram", model);
+		
+		createReq.setExtendedData(dataMap);
+		SaveDiagramCommand cmd = new SaveDiagramCommand(createReq);
+		cmd.execute();
 	}
-	
+
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
-		super.doSaveAs();
+		return;
 	}
-	
-	
+
 	// Nested class for the outline view
 	protected class OutlinePage extends ContentOutlinePage {
 		private SashForm sash;

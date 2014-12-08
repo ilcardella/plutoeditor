@@ -2,14 +2,10 @@ package plutoeditor.generator;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.util.List;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import plutoeditor.model.editor.Diagram;
-import plutoeditor.model.editor.Node;
 
 public class MyGeneratorEngine {
 
@@ -24,6 +20,7 @@ public class MyGeneratorEngine {
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Specify a file to save");
+		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 
 		int userSelection = fileChooser.showSaveDialog(parentFrame);
 

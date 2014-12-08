@@ -9,6 +9,11 @@ import plutoeditor.model.classes.Trip;
 
 public class MissionCreator extends Node {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Mission run(ArrayList<Trip> trips) {
 
 		Mission m = new Mission();

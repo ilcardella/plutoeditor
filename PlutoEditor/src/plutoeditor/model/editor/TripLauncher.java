@@ -7,6 +7,11 @@ import java.util.Calendar;
 
 public class TripLauncher extends Node {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public Mission run(Mission m) {
 

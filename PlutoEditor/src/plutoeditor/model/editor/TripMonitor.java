@@ -5,6 +5,11 @@ import plutoeditor.model.classes.Trip;
 
 public class TripMonitor extends Node {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public Mission run(Mission m) {
 		// if the current trip is completed, remove it from the list of trips

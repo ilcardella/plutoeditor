@@ -2,6 +2,7 @@ package plutoeditor.model.editor;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,10 @@ import plutoeditor.model.classes.Mission;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class Node implements IAdaptable {
+public class Node implements IAdaptable, Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static final String PROPERTY_ADD = "NodeAddChild";
 	public static final String PROPERTY_REMOVE = "NodeRemoveChild";
 	public static final String PROPERTY_RENAME = "NodeRename";

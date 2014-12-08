@@ -30,7 +30,7 @@ public class GenerateCodeAction extends EditorPartAction {
 //
 //			@Override
 //			public ImageData getImageData() {
-//				ImageData img = new ImageData("~/icons/generate-icon.ico");
+//				ImageData img = new ImageData("./icons/generate-icon.ico");
 //				return img;
 //			}
 //		});

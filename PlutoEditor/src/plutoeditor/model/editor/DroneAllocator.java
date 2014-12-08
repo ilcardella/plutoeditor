@@ -8,6 +8,11 @@ import plutoeditor.model.classes.Drone;
 
 public class DroneAllocator extends Node {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public Mission run(Mission m) {
 		List<Drone> availableDrones = new ArrayList<Drone>(); // =getAvailableDrones()

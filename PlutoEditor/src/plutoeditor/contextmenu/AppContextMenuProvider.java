@@ -9,6 +9,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.actions.ActionFactory;
 
 import plutoeditor.actions.GenerateCodeAction;
+import plutoeditor.actions.LoadDiagramAction;
+import plutoeditor.actions.SaveDiagramAction;
 
 public class AppContextMenuProvider extends ContextMenuProvider {
 
@@ -33,6 +35,12 @@ public class AppContextMenuProvider extends ContextMenuProvider {
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 		
 		action = getActionRegistry().getAction(GenerateCodeAction.GENERATE_CODE_ID);
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		
+		action = getActionRegistry().getAction(SaveDiagramAction.SAVE_DIAGRAM_ID);
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		
+		action = getActionRegistry().getAction(LoadDiagramAction.LOAD_DIAGRAM_ID);
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 	}
 

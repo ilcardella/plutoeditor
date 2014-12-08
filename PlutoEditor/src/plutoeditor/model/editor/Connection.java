@@ -1,6 +1,13 @@
 package plutoeditor.model.editor;
 
-public class Connection {
+import java.io.Serializable;
+
+public class Connection implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	protected Node sourceNode;
 	protected Node targetNode;
 
