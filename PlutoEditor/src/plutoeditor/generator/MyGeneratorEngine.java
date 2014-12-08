@@ -2,17 +2,19 @@ package plutoeditor.generator;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import plutoeditor.model.editor.Diagram;
+import plutoeditor.model.editor.Node;
 
-public class MyGeneratorTemplate {
+public class MyGeneratorEngine {
 
 	Diagram parent;
 
-	public MyGeneratorTemplate(Diagram model) {
+	public MyGeneratorEngine(Diagram model) {
 		this.parent = model;
 	}
 
@@ -32,8 +34,10 @@ public class MyGeneratorTemplate {
 				}
 				FileWriter fw = new FileWriter(fileToSave);
 				
+				String s = "ciao";
+				
 				// Qui la logica che va a scrivere sul file
-				fw.write("prova");
+				fw.write(s);
 				
 				fw.flush();
 				fw.close();
@@ -45,5 +49,6 @@ public class MyGeneratorTemplate {
 			}
 		}
 	}
+	
 
 }
