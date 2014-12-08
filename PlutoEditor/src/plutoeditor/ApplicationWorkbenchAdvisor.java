@@ -36,8 +36,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 					IWorkbenchWindow bw = bench.getActiveWorkbenchWindow();
 					IWorkbenchPage page = bw.getActivePage();
 
-					page.openEditor(new MyEditorInput("PlutoEditor"),
-							MyGraphicalEditor.ID, false);
+					page.openEditor(new MyEditorInput("PlutoEditor"), MyGraphicalEditor.ID, false);
 					page.showView(IPageLayout.ID_OUTLINE);
 
 				} catch (Exception e) {
