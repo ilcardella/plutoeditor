@@ -12,19 +12,25 @@ public class MyTemplate {
 
 		Scanner scanner = new Scanner(System.in);
 		List<Mission> missions;
+		// Fill this part with the blocks declaration
+		<declaration></declaration>
 
 		System.out.print("Enter number of missions:");
 		int number = scanner.nextInt();
-		System.out.println("You just entered:" + number);
-
-		System.out.println("Start");
 
 		missions = new ArrayList<Mission>();
 		for( int n=0; n<number; n++){
 			missions.add(new Mission());
 		}
+		
+		System.out.println("Start");
 
+		// usare un thread per ogni mission così vanno parallelamente
 		for (int i = 0; i < missions.size(); i++) {
+			
+			// Fill this part with the ordered execution of run method of each block
+			<execution></execution>
+			
 			System.out
 					.println("Mission" + missions.get(i).getId() + " started");
 		}
