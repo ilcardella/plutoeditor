@@ -2,6 +2,7 @@ package plutoeditor.generator;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -33,10 +34,9 @@ public class MyGeneratorEngine {
 					fileToSave.createNewFile();
 				}
 				FileWriter fw = new FileWriter(fileToSave);
-				
-				String s = "ciao";
-				
+
 				// Qui la logica che va a scrivere sul file
+				String s = "ciao";
 				fw.write(s);
 				
 				fw.flush();
@@ -49,6 +49,5 @@ public class MyGeneratorEngine {
 			}
 		}
 	}
-	
 
 }
