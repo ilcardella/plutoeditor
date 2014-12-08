@@ -20,7 +20,7 @@ public class Mission {
 
 	public Mission() {
 
-		this.id= new Random(1000).nextInt();
+		this.id= new Random().nextInt(Integer.MAX_VALUE) +1;
 		this.status= UNEXECUTED;
 		this.trips = new ArrayList<Trip>();
 
