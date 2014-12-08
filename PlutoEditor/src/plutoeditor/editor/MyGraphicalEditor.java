@@ -83,7 +83,6 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		model = newModel;
 		GraphicalViewer viewer = getGraphicalViewer();
 		viewer.setContents(model);
-		
 	}
 
 	@Override
