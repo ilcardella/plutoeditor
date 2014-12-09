@@ -39,8 +39,14 @@ public class MyGeneratorEngine {
 					fileToSave.createNewFile();
 				}
 
-				// Write the generated code to the file
-				writeCodeToFile();
+				// Generate all dependency classes in the same path of the file
+				// TODO
+				
+				// copy the content of the template to the final file
+				copyTemplateCodeToFile();
+
+				// add the model-dependent code to the generated file
+				writeModelCodeToFile();
 
 				System.out.println("Generated file: "
 						+ fileToSave.getAbsolutePath());
@@ -52,10 +58,11 @@ public class MyGeneratorEngine {
 		}
 	}
 
-	private void writeCodeToFile() {
+	// This method copy the content from the input stream to the output file
+	// stream
+	private void copyTemplateCodeToFile() {
 		InputStream templateInputStream = null;
 		FileOutputStream fileOutputStream = null;
-		FileInputStream fileInputStream = null;
 
 		try {
 			// The inputStream is the template file with default code
@@ -66,18 +73,15 @@ public class MyGeneratorEngine {
 			// the output is the file with the generated code
 			fileOutputStream = new FileOutputStream(fileToSave);
 
-			// copy the content of the template to the final file
-			copyInputStreamToFile(templateInputStream, fileOutputStream);
+			int read = 0;
+			byte[] bytes = new byte[1024];
 
-			// Get the FileInputStream of the generated file
-			// Because we need to replace the tags lines
-			fileInputStream = new FileInputStream(fileToSave);
-
-			// add the model-dependent code to the generated file
-			writeModelCodeToFile(fileInputStream, fileOutputStream);
+			while ((read = templateInputStream.read(bytes)) != -1) {
+				fileOutputStream.write(bytes, 0, read);
+			}
 
 		} catch (IOException e) {
-			System.out.println("Error writing code.");
+			System.out.println("Error copying from template.");
 			e.printStackTrace();
 		} finally {
 			if (templateInputStream != null) {
@@ -99,48 +103,19 @@ public class MyGeneratorEngine {
 				}
 
 			}
-			if (fileInputStream != null) {
-				try {
-					fileInputStream.close();
-				} catch (IOException e) {
-					System.out.println("Error closing the fileInputStream.");
-					e.printStackTrace();
-				}
-
-			}
-		}
-
-	}
-
-	// This method copy the content from the input stream to the output file
-	// stream
-	private void copyInputStreamToFile(InputStream input,
-			FileOutputStream output) {
-		InputStream inputStream = input;
-		FileOutputStream outputStream = output;
-
-		try {
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-
-		} catch (IOException e) {
-			System.out.println("Error copying from template.");
-			e.printStackTrace();
 		}
 	}
 
 	// This method looks for the tags in the fileToSave object and change them
 	// with the code generated from the model diagram
-	private void writeModelCodeToFile(FileInputStream fileInputStream,
-			FileOutputStream fileOutputStream) {
-
+	private void writeModelCodeToFile() {
+		FileInputStream fileInputStream = null;
+		FileOutputStream fileOutputStream = null;
 		String fileAsString = ""; // String representation of the file
 
 		try {
+
+			fileInputStream = new FileInputStream(fileToSave);
 
 			// Read the file with default code already generated
 			// and convert it in a String object
@@ -154,6 +129,15 @@ public class MyGeneratorEngine {
 			}
 			fileAsString = sb.toString();
 
+			br.close();
+			fileInputStream.close();
+
+			// Initialize output stream
+			fileOutputStream = new FileOutputStream(fileToSave);
+
+			// Replace the <imp> import tag with the needed imports
+			// TODO
+			
 			// Filling the declaration tag in the template
 			List<Node> children = diagram.getChildrenNodes();
 			sb = new StringBuilder();
@@ -162,7 +146,7 @@ public class MyGeneratorEngine {
 
 				// Create the line to add
 				String className = n.getClass().getName();
-				String[] splittedName = n.getClass().getName().split(".");
+				String[] splittedName = n.getClass().getName().split("\\.");
 				String name = splittedName[splittedName.length - 1];
 				String line = className + " " + name.toLowerCase() + " = new "
 						+ className + "();";
@@ -171,19 +155,37 @@ public class MyGeneratorEngine {
 			}
 
 			// Write the line to the fileAsString
-			fileAsString.replaceAll("<declaration>", sb.toString());
-			fileAsString.replaceAll("</declaration>", "");
+			fileAsString = fileAsString.replaceAll("\\<dec>", sb.toString());
 
 			// Filling the execution tag
 			// TODO
-
+			
 			// Convert string to byte[] and write to the outputStream
 			byte[] fileStringInBytes = fileAsString.getBytes();
 			fileOutputStream.write(fileStringInBytes);
 
 		} catch (Exception e) {
-			System.out.println("Error copying generated from model code.");
+			System.out.println("Error writing generated code from model.");
 			e.printStackTrace();
+		} finally {
+
+			if (fileInputStream != null) {
+				try {
+					fileInputStream.close();
+				} catch (IOException e) {
+					System.out.println("Error closing the fileInputStream.");
+					e.printStackTrace();
+				}
+			}
+			if (fileOutputStream != null) {
+				try {
+					fileOutputStream.flush();
+					fileOutputStream.close();
+				} catch (IOException e) {
+					System.out.println("Error closing the outputStream.");
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
