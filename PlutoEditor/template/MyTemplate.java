@@ -12,6 +12,8 @@ public class MyTemplate {
 
 		Scanner scanner = new Scanner(System.in);
 		List<Mission> missions;
+		<declaration>
+		</declaration>
 
 		System.out.print("Enter number of missions:");
 		int number = scanner.nextInt();

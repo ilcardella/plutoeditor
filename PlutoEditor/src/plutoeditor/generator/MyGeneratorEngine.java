@@ -137,12 +137,15 @@ public class MyGeneratorEngine {
 	// with the code generated from the model diagram
 	private void writeModelCodeToFile(FileInputStream fileInputStream,
 			FileOutputStream fileOutputStream) {
-		String fileAsString = "";
+
+		String fileAsString = ""; // String representation of the file
+
 		try {
-			
+
 			// Read the file with default code already generated
 			// and convert it in a String object
-			BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8" ));
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					fileInputStream, "UTF-8"));
 			StringBuilder sb = new StringBuilder();
 			String l;
 			while ((l = br.readLine()) != null) {
@@ -153,30 +156,30 @@ public class MyGeneratorEngine {
 
 			// Filling the declaration tag in the template
 			List<Node> children = diagram.getChildrenNodes();
-			String line = "";
+			sb = new StringBuilder();
+
 			for (Node n : children) {
 
 				// Create the line to add
 				String className = n.getClass().getName();
 				String[] splittedName = n.getClass().getName().split(".");
 				String name = splittedName[splittedName.length - 1];
-				line = className + " " + name.toLowerCase() + " = new "
+				String line = className + " " + name.toLowerCase() + " = new "
 						+ className + "();";
-				
-				// Convert string to byte[]
-				byte[] lineInBytes = line.getBytes();
-
-				// Look for <declaration></> tag
-				// TODO
-				int start = fileAsString.indexOf("<declaration>");
-				int end = fileAsString.indexOf("</declaration>");
-
-				// Write the line to the file
-				fileOutputStream.write(lineInBytes, start, end-start);
+				sb.append(line);
+				sb.append('\n');
 			}
+
+			// Write the line to the fileAsString
+			fileAsString.replaceAll("<declaration>", sb.toString());
+			fileAsString.replaceAll("</declaration>", "");
 
 			// Filling the execution tag
 			// TODO
+
+			// Convert string to byte[] and write to the outputStream
+			byte[] fileStringInBytes = fileAsString.getBytes();
+			fileOutputStream.write(fileStringInBytes);
 
 		} catch (Exception e) {
 			System.out.println("Error copying generated from model code.");
