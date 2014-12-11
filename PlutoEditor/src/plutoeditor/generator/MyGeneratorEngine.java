@@ -17,8 +17,8 @@ import plutoeditor.model.classes.*;
 
 public class MyGeneratorEngine {
 
-	private Diagram diagram;
-	private File fileToSave;
+	private Diagram diagram; // Model of the diagram
+	private File parentFolder; // Parent folder of all the generated code
 
 	public MyGeneratorEngine(Diagram model) {
 		this.diagram = model;
@@ -28,28 +28,23 @@ public class MyGeneratorEngine {
 		JFrame parentFrame = new JFrame();
 
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Specify a file to save");
+		fileChooser.setDialogTitle("Specify the folder destination");
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setAcceptAllFileFilterUsed(false);
 
-		int userSelection = fileChooser.showSaveDialog(parentFrame);
+		int userSelection = fileChooser.showDialog(parentFrame, "Generate");
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			try {
-				fileToSave = fileChooser.getSelectedFile();
-				if (!fileToSave.exists()) {
-					fileToSave.createNewFile();
-				}
+				// this is the directory chosen by the user, where to generate
+				// the code
+				parentFolder = fileChooser.getSelectedFile();
 
-				// Generate all dependency classes in the same path of the file
-				// TODO
-				
-				// copy the content of the template to the final file
-				copyTemplateCodeToFile();
+				// Generate the template app in the destination folder
+				generateTemplateApp();
 
 				// add the model-dependent code to the generated file
-				writeModelCodeToFile();
-
-				System.out.println("Generated file: "
-						+ fileToSave.getAbsolutePath());
+				generateModelCodeInTemplateApp();
 
 			} catch (Exception e) {
 				System.out.println("Error during generation.");
@@ -60,28 +55,42 @@ public class MyGeneratorEngine {
 
 	// This method copy the content from the input stream to the output file
 	// stream
-	private void copyTemplateCodeToFile() {
+	private void generateTemplateApp() {
+
+		// ex: generateTemplateFile( physical name of the file,
+		// resource path from template folder)
+		generateTemplateFile("/MyTemplate.java", "/template/MyTemplate.java");
+		// TODO call this method for all java files of the template app
+
+	}
+
+	private void generateTemplateFile(String physicalName, String resourcePath) {
 		InputStream templateInputStream = null;
 		FileOutputStream fileOutputStream = null;
+		String physicalPath = parentFolder.getAbsolutePath() + physicalName;
 
 		try {
-			// The inputStream is the template file with default code
-			templateInputStream = getClass()
-					.getResource("/template/MyTemplate.java").openConnection()
-					.getInputStream();
+			File f = new File(physicalPath);
+			if (!f.exists()) {
+				f.getParentFile().mkdirs(); // Create parent folders if needed
+				f.createNewFile(); // Create the file itself
+			}
+			// Getting the inputstream of the java file to generate
+			templateInputStream = getClass().getResource(resourcePath)
+					.openConnection().getInputStream();
 
 			// the output is the file with the generated code
-			fileOutputStream = new FileOutputStream(fileToSave);
+			fileOutputStream = new FileOutputStream(f);
 
+			// copy the inputstream to the outputstream
 			int read = 0;
 			byte[] bytes = new byte[1024];
-
 			while ((read = templateInputStream.read(bytes)) != -1) {
 				fileOutputStream.write(bytes, 0, read);
 			}
 
 		} catch (IOException e) {
-			System.out.println("Error copying from template.");
+			System.out.println("Error copying from template file.");
 			e.printStackTrace();
 		} finally {
 			if (templateInputStream != null) {
@@ -104,18 +113,20 @@ public class MyGeneratorEngine {
 
 			}
 		}
+
 	}
 
 	// This method looks for the tags in the fileToSave object and change them
 	// with the code generated from the model diagram
-	private void writeModelCodeToFile() {
+	private void generateModelCodeInTemplateApp() {
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
-		String fileAsString = ""; // String representation of the file
+		String fileAsString = null; // String representation of the file
+		File modelFile = new File(parentFolder.getAbsolutePath()+"/MyTemplate.java");
 
 		try {
 
-			fileInputStream = new FileInputStream(fileToSave);
+			fileInputStream = new FileInputStream(modelFile);
 
 			// Read the file with default code already generated
 			// and convert it in a String object
@@ -133,11 +144,11 @@ public class MyGeneratorEngine {
 			fileInputStream.close();
 
 			// Initialize output stream
-			fileOutputStream = new FileOutputStream(fileToSave);
+			fileOutputStream = new FileOutputStream(modelFile);
 
 			// Replace the <imp> import tag with the needed imports
 			// TODO
-			
+
 			// Filling the declaration tag in the template
 			List<Node> children = diagram.getChildrenNodes();
 			sb = new StringBuilder();
@@ -159,7 +170,7 @@ public class MyGeneratorEngine {
 
 			// Filling the execution tag
 			// TODO
-			
+
 			// Convert string to byte[] and write to the outputStream
 			byte[] fileStringInBytes = fileAsString.getBytes();
 			fileOutputStream.write(fileStringInBytes);
