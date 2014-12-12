@@ -77,7 +77,6 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	public MyGraphicalEditor() {
 		setEditDomain(new DefaultEditDomain(this));
 	}
-	
 
 	public void setLoadedModel(Diagram newModel) {
 		model = newModel;
@@ -230,10 +229,10 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 
 		action = new GenerateCodeAction(this);
 		registry.registerAction(action);
-		
+
 		action = new SaveDiagramAction(this);
 		registry.registerAction(action);
-		
+
 		action = new LoadDiagramAction(this);
 		registry.registerAction(action);
 	}
@@ -242,9 +241,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	public void doSave(IProgressMonitor monitor) {
 		CreateRequest createReq = new CreateRequest();
 		HashMap<String, Diagram> dataMap = new HashMap<String, Diagram>();
-		
+
 		dataMap.put("diagram", model);
-		
+
 		createReq.setExtendedData(dataMap);
 		SaveDiagramCommand cmd = new SaveDiagramCommand(createReq);
 		cmd.execute();
