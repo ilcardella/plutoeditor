@@ -162,21 +162,20 @@ public class MyGeneratorEngine {
 
 			for (Node n : children) {
 				// Create the line to add
-				String className = n.getClass().getName();
-				String[] splittedName = className.split("\\.");
-				String name = splittedName[splittedName.length - 1];
-				String line = className + " " + name.toLowerCase() + " = new "
-						+ className + "();";
+//				String className = n.getClass().getName();
+//				String[] splittedName = className.split("\\.");
+//				String name = splittedName[splittedName.length - 1];
+//				String line = className + " " + name.toLowerCase() + " = new "
+//						+ className + "();";
+				String name = getClassNameFromObject(n);
+				String line = name + " " + name.toLowerCase() + " = new "
+						+ name + "();";
 				sb.append(line);
 				sb.append('\n');
 			}
 
 			// Write the line to the fileAsString
 			fileAsString = fileAsString.replaceAll("\\<dec>", sb.toString());
-
-			// Creating the string that will replace the exe tag
-			String exeString = doSomething();
-			fileAsString = fileAsString.replaceAll("\\<exe>", exeString);
 
 			// Convert string to byte[] and write to the outputStream
 			byte[] fileStringInBytes = fileAsString.getBytes();
@@ -205,40 +204,6 @@ public class MyGeneratorEngine {
 				}
 			}
 		}
-	}
-
-	// generate the string to exchange with the <exe> tag
-	private String doSomething() {
-		Node first = null;
-		List<Node> children = diagram.getChildrenNodes();
-		StringBuilder sb = new StringBuilder();
-
-		for (Node n : children) {
-			if (n.getTargetConnections().isEmpty()) {
-				first = n;
-				break;
-			}
-		}
-
-		String name = getClassNameFromObject(first).toLowerCase();
-		sb.append("mission = " + name + ".run(mission);");
-		sb.append('\n');
-
-		List<Node> nextStep = new ArrayList<Node>();
-		
-		List<Connection> sourceConns = first.getSourceConnections();
-		for(Connection c: sourceConns){
-			nextStep.add(c.getTargetNode());
-		}
-		
-		// il risultato di first va a tutti i nodi nextStep
-		
-		// il risultato d ogni nodo nextStep va a tutti i suoi nextStep
-		
-		// e cosi via
-		
-		return sb.toString();
-
 	}
 
 	// return the className of the parameter without the package as prefix
