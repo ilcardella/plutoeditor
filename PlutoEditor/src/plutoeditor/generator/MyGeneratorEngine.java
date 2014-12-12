@@ -7,7 +7,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -122,7 +127,8 @@ public class MyGeneratorEngine {
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
 		String fileAsString = null; // String representation of the file
-		File modelFile = new File(parentFolder.getAbsolutePath()+"/MyTemplate.java");
+		File modelFile = new File(parentFolder.getAbsolutePath()
+				+ "/MyTemplate.java");
 
 		try {
 
@@ -147,6 +153,7 @@ public class MyGeneratorEngine {
 			fileOutputStream = new FileOutputStream(modelFile);
 
 			// Replace the <imp> import tag with the needed imports
+			// It can be done statically, depending on the template app packages
 			// TODO
 
 			// Filling the declaration tag in the template
@@ -154,10 +161,9 @@ public class MyGeneratorEngine {
 			sb = new StringBuilder();
 
 			for (Node n : children) {
-
 				// Create the line to add
 				String className = n.getClass().getName();
-				String[] splittedName = n.getClass().getName().split("\\.");
+				String[] splittedName = className.split("\\.");
 				String name = splittedName[splittedName.length - 1];
 				String line = className + " " + name.toLowerCase() + " = new "
 						+ className + "();";
@@ -168,8 +174,9 @@ public class MyGeneratorEngine {
 			// Write the line to the fileAsString
 			fileAsString = fileAsString.replaceAll("\\<dec>", sb.toString());
 
-			// Filling the execution tag
-			// TODO
+			// Creating the string that will replace the exe tag
+			String exeString = doSomething();
+			fileAsString = fileAsString.replaceAll("\\<exe>", exeString);
 
 			// Convert string to byte[] and write to the outputStream
 			byte[] fileStringInBytes = fileAsString.getBytes();
@@ -199,7 +206,47 @@ public class MyGeneratorEngine {
 			}
 		}
 	}
-	
-	
-	
-} // End 
+
+	// generate the string to exchange with the <exe> tag
+	private String doSomething() {
+		Node first = null;
+		List<Node> children = diagram.getChildrenNodes();
+		StringBuilder sb = new StringBuilder();
+
+		for (Node n : children) {
+			if (n.getTargetConnections().isEmpty()) {
+				first = n;
+				break;
+			}
+		}
+
+		String name = getClassNameFromObject(first).toLowerCase();
+		sb.append("mission = " + name + ".run(mission);");
+		sb.append('\n');
+
+		List<Node> nextStep = new ArrayList<Node>();
+		
+		List<Connection> sourceConns = first.getSourceConnections();
+		for(Connection c: sourceConns){
+			nextStep.add(c.getTargetNode());
+		}
+		
+		// il risultato di first va a tutti i nodi nextStep
+		
+		// il risultato d ogni nodo nextStep va a tutti i suoi nextStep
+		
+		// e cosi via
+		
+		return sb.toString();
+
+	}
+
+	// return the className of the parameter without the package as prefix
+	public String getClassNameFromObject(Object o) {
+		String className = o.getClass().getName();
+		String[] splittedName = className.split("\\.");
+		String name = splittedName[splittedName.length - 1];
+		return name;
+	}
+
+} // End
