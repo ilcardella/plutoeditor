@@ -162,11 +162,7 @@ public class MyGeneratorEngine {
 
 			for (Node n : children) {
 				// Create the line to add
-//				String className = n.getClass().getName();
-//				String[] splittedName = className.split("\\.");
-//				String name = splittedName[splittedName.length - 1];
-//				String line = className + " " + name.toLowerCase() + " = new "
-//						+ className + "();";
+
 				String name = getClassNameFromObject(n);
 				String line = name + " " + name.toLowerCase() + " = new "
 						+ name + "();";
