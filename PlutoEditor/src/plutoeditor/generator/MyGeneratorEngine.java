@@ -152,10 +152,6 @@ public class MyGeneratorEngine {
 			// Initialize output stream
 			fileOutputStream = new FileOutputStream(modelFile);
 
-			// Replace the <imp> import tag with the needed imports
-			// It can be done statically, depending on the template app packages
-			// TODO
-
 			// Filling the declaration tag in the template
 			List<Node> children = diagram.getChildrenNodes();
 			sb = new StringBuilder();
