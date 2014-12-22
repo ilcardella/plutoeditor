@@ -33,7 +33,7 @@ public class MyGeneratorEngine {
 		JFrame parentFrame = new JFrame();
 
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Specify the folder destination");
+		fileChooser.setDialogTitle("Specify the destination folder");
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 
@@ -50,6 +50,8 @@ public class MyGeneratorEngine {
 
 				// add the model-dependent code to the generated file
 				generateModelCodeInTemplateApp();
+				
+				System.out.println("Code generated in: "+parentFolder.getAbsolutePath());
 
 			} catch (Exception e) {
 				System.out.println("Error during generation.");
