@@ -2,19 +2,11 @@ package plutoeditor.actions;
 
 import java.util.HashMap;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.ui.actions.EditorPartAction;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.IEditorPart;
 
 import plutoeditor.commands.generation.GenerateCodeCommand;
-import plutoeditor.editpart.DiagramEditPart;
 import plutoeditor.model.editor.Diagram;
 
 public class GenerateCodeAction extends EditorPartAction {
@@ -23,7 +15,7 @@ public class GenerateCodeAction extends EditorPartAction {
 	
 	public GenerateCodeAction(IEditorPart editor) {
 		super(editor);
-		setText("Generate Code");
+		setText("Generate Code...");
 		setId(GENERATE_CODE_ID);
 		setToolTipText("Generate code from diagram");
 //		setImageDescriptor(new ImageDescriptor() {

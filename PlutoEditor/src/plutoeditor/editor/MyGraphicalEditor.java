@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
@@ -193,10 +194,53 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	protected void initializeGraphicalViewer() {
 
 		GraphicalViewer viewer = getGraphicalViewer();
-		model = new Diagram();
+		model = createDefaultModel();
 		viewer.setContents(model);
 		viewer.addDropTargetListener(new MyTemplateTransferDropTargetListener(
 				viewer));
+	}
+	
+	private Diagram createDefaultModel(){
+		Diagram model = new Diagram();
+		
+		MissionCreator mc = new MissionCreator();
+		mc.setName("Mission Creator");
+		mc.setLayout(new Rectangle(25, 40, 120, 40));
+		
+		DroneAllocator da = new DroneAllocator();
+		da.setName("Drone Allocator");
+		da.setLayout(new Rectangle(220, 40, 120, 40));
+		
+		TripLauncher tl = new TripLauncher();
+		tl.setName("Trip Launcher");
+		tl.setLayout(new Rectangle(415, 40, 120, 40));
+		
+		TripMonitor tm = new TripMonitor();
+		tm.setName("Trip Monitor");
+		tm.setLayout(new Rectangle(415, 155, 120, 40));
+		
+		Connection conn = new Connection(mc, da);
+		mc.getSourceConnections().add(conn);
+		da.getTargetConnections().add(conn);
+		
+		conn = new Connection(da, tl);
+		da.getSourceConnections().add(conn);
+		tl.getTargetConnections().add(conn);
+		
+		conn = new Connection(tl, tm);
+		tl.getSourceConnections().add(conn);
+		tm.getTargetConnections().add(conn);
+		
+		conn = new Connection(tm, da);
+		tm.getSourceConnections().add(conn);
+		da.getTargetConnections().add(conn);
+		
+		model.getChildrenNodes().add(mc);
+		model.getChildrenNodes().add(da);
+		model.getChildrenNodes().add(tl);
+		model.getChildrenNodes().add(tm);
+		
+		return model;
 	}
 
 	@Override
