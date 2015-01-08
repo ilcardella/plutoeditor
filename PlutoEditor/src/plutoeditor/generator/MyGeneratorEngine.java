@@ -7,18 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import plutoeditor.model.editor.*;
-import plutoeditor.model.classes.*;
 
 public class MyGeneratorEngine {
 
@@ -49,9 +45,10 @@ public class MyGeneratorEngine {
 				generateTemplateApp();
 
 				// add the model-dependent code to the generated file
-				generateModelCodeInTemplateApp();
-				
-				System.out.println("Code generated in: "+parentFolder.getAbsolutePath());
+				// TODO generateModelCodeInTemplateApp();
+
+				System.out.println("Code generated in: "
+						+ parentFolder.getAbsolutePath());
 
 			} catch (Exception e) {
 				System.out.println("Error during generation.");
@@ -66,62 +63,71 @@ public class MyGeneratorEngine {
 
 		// ex: generateTemplateFile( physical name of the file,
 		// resource path from template folder)
-		generateTemplateFile("/MyTemplate.java", "/template/MyTemplate.java");
-		// TODO call this method for all java files of the template app
-
-	}
-
-	private void generateTemplateFile(String physicalName, String resourcePath) {
-		InputStream templateInputStream = null;
-		FileOutputStream fileOutputStream = null;
-		String physicalPath = parentFolder.getAbsolutePath() + physicalName;
-
+		//generateTemplateFile("/MyTemplate.java", "/template/MyTemplate.java");
 		try {
-			File f = new File(physicalPath);
-			if (!f.exists()) {
-				f.getParentFile().mkdirs(); // Create parent folders if needed
-				f.createNewFile(); // Create the file itself
-			}
-			// Getting the inputstream of the java file to generate
-			templateInputStream = getClass().getResource(resourcePath)
-					.openConnection().getInputStream();
-
-			// the output is the file with the generated code
-			fileOutputStream = new FileOutputStream(f);
-
-			// copy the inputstream to the outputstream
-			int read = 0;
-			byte[] bytes = new byte[1024];
-			while ((read = templateInputStream.read(bytes)) != -1) {
-				fileOutputStream.write(bytes, 0, read);
-			}
-
-		} catch (IOException e) {
-			System.out.println("Error copying from template file.");
+			
+			URL url = getClass().getResource("/template/src");
+			File srcDir = new File(new File(url.toURI()).getAbsolutePath());
+			File destDir = new File(parentFolder.getAbsolutePath());
+			copy(srcDir, destDir);
+		} catch (Exception e) {
+			System.out.println("Error copying the template App");
 			e.printStackTrace();
-		} finally {
-			if (templateInputStream != null) {
-				try {
-					templateInputStream.close();
-				} catch (IOException e) {
-					System.out
-							.println("Error closing the template templateInputStream.");
-					e.printStackTrace();
-				}
-			}
-			if (fileOutputStream != null) {
-				try {
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch (IOException e) {
-					System.out.println("Error closing the outputStream.");
-					e.printStackTrace();
-				}
-
-			}
 		}
 
 	}
+
+//	private void generateTemplateFile(String physicalName, String resourcePath) {
+//		InputStream templateInputStream = null;
+//		FileOutputStream fileOutputStream = null;
+//		String physicalPath = parentFolder.getAbsolutePath() + physicalName;
+//
+//		try {
+//			File f = new File(physicalPath);
+//			if (!f.exists()) {
+//				f.getParentFile().mkdirs(); // Create parent folders if needed
+//				f.createNewFile(); // Create the file itself
+//			}
+//			// Getting the inputstream of the java file to generate
+//			templateInputStream = getClass().getResource(resourcePath)
+//					.openConnection().getInputStream();
+//
+//			// the output is the file with the generated code
+//			fileOutputStream = new FileOutputStream(f);
+//
+//			// copy the inputstream to the outputstream
+//			int read = 0;
+//			byte[] bytes = new byte[1024];
+//			while ((read = templateInputStream.read(bytes)) != -1) {
+//				fileOutputStream.write(bytes, 0, read);
+//			}
+//
+//		} catch (IOException e) {
+//			System.out.println("Error copying from template file.");
+//			e.printStackTrace();
+//		} finally {
+//			if (templateInputStream != null) {
+//				try {
+//					templateInputStream.close();
+//				} catch (IOException e) {
+//					System.out
+//							.println("Error closing the template templateInputStream.");
+//					e.printStackTrace();
+//				}
+//			}
+//			if (fileOutputStream != null) {
+//				try {
+//					fileOutputStream.flush();
+//					fileOutputStream.close();
+//				} catch (IOException e) {
+//					System.out.println("Error closing the outputStream.");
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		}
+//
+//	}
 
 	// This method looks for the tags in the fileToSave object and change them
 	// with the code generated from the model diagram
@@ -129,6 +135,7 @@ public class MyGeneratorEngine {
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
 		String fileAsString = null; // String representation of the file
+		// TODO caricare in modelfile il file da modificare
 		File modelFile = new File(parentFolder.getAbsolutePath()
 				+ "/MyTemplate.java");
 
@@ -206,6 +213,38 @@ public class MyGeneratorEngine {
 		String[] splittedName = className.split("\\.");
 		String name = splittedName[splittedName.length - 1];
 		return name;
+	}
+
+	// ------------------------------------------------------
+
+	public void copy(File sourceLocation, File targetLocation)
+			throws IOException {
+		if (sourceLocation.isDirectory()) {
+			copyDirectory(sourceLocation, targetLocation);
+		} else {
+			copyFile(sourceLocation, targetLocation);
+		}
+	}
+
+	private void copyDirectory(File source, File target) throws IOException {
+		if (!target.exists()) {
+			target.mkdir();
+		}
+
+		for (String f : source.list()) {
+			copy(new File(source, f), new File(target, f));
+		}
+	}
+
+	private void copyFile(File source, File target) throws IOException {
+		try (InputStream in = new FileInputStream(source);
+				OutputStream out = new FileOutputStream(target)) {
+			byte[] buf = new byte[1024];
+			int length;
+			while ((length = in.read(buf)) > 0) {
+				out.write(buf, 0, length);
+			}
+		}
 	}
 
 } // End
