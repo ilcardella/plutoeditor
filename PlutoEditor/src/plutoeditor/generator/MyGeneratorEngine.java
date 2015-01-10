@@ -65,8 +65,9 @@ public class MyGeneratorEngine {
 		// resource path from template folder)
 		//generateTemplateFile("/MyTemplate.java", "/template/MyTemplate.java");
 		try {
-			
+			URL sourcePath = getClass().getProtectionDomain().getCodeSource().getLocation();
 			URL url = getClass().getResource("/template/src");
+			url = new URL(sourcePath.toString()+url.toString());
 			File srcDir = new File(new File(url.toURI()).getAbsolutePath());
 			File destDir = new File(parentFolder.getAbsolutePath());
 			copy(srcDir, destDir);
