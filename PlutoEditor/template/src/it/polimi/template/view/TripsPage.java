@@ -1,7 +1,7 @@
 package it.polimi.template.view;
 
-
 import it.polimi.template.model.*;
+
 import java.awt.BorderLayout;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -16,6 +16,8 @@ import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,8 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.polimi.template.controller.TripsPageController.ExportDoneListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -45,12 +49,19 @@ public class TripsPage extends JFrame implements DragSourceListener,
 		 */
 	private static final long serialVersionUID = 1L;
 	private DefaultListModel model;
+	private DefaultListModel model1;
+
 	private JList list;
+	private JList tripList;
+
+	private ExportDoneListener edp;
+
 	private JLabel label;
 	private JButton ok;
 	private JButton delete;
 
 	private String nameMission;
+	private String selectedAction;
 	private ImageIcon icon;
 
 	DragSource ds;
@@ -62,12 +73,11 @@ public class TripsPage extends JFrame implements DragSourceListener,
 		try {
 			initUI();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void createList() {
+	private void createActionList() {
 
 		model = new DefaultListModel();
 		list = new JList(model);
@@ -80,6 +90,14 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 	}
 
+	private void createTripList() {
+
+		model1 = new DefaultListModel();
+		tripList = new JList(model1);
+		tripList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	}
+
 	public final void initUI() throws IOException {
 
 		setLayout(new BorderLayout());
@@ -88,12 +106,15 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 		label = new JLabel(icon);
 		label.setTransferHandler(new TransferHandler("text"));
-
-		createList();
+		createActionList();
+		createTripList();
 		JScrollPane actionsPane = new JScrollPane(list);
+		JScrollPane tripsPane = new JScrollPane(tripList);
+
 		ds = new DragSource();
 		ds.createDefaultDragGestureRecognizer(list, DnDConstants.ACTION_COPY,
 				this);
+
 		setVisible(true);
 
 		JPanel buttonsPane = new JPanel();
@@ -104,16 +125,19 @@ public class TripsPage extends JFrame implements DragSourceListener,
 		buttonsPane.add(ok);
 		buttonsPane.add(delete);
 
+		new MyDropTargetListener(label);
 		MouseListener listener = new DragMouseAdapter();
 		label.addMouseListener(listener);
 
-		getContentPane().add(label, BorderLayout.SOUTH);
+		getContentPane().add(label, BorderLayout.WEST);
 		getContentPane().add(actionsPane, BorderLayout.NORTH);
-		getContentPane().add(buttonsPane, BorderLayout.WEST);
+		getContentPane().add(buttonsPane, BorderLayout.SOUTH);
+		getContentPane().add(tripsPane, BorderLayout.EAST);
 
 		setTitle("Pluto-Trips Page (" + nameMission + ")");
 		setSize(700, 600);
 		setLocationRelativeTo(null);
+
 	}
 
 	private class DragMouseAdapter extends MouseAdapter {
@@ -133,93 +157,110 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 	}
 
+	private class MyDropTargetListener extends DropTargetAdapter {
+
+		private DropTarget dropTarget;
+		private JLabel label;
+
+		public MyDropTargetListener(JLabel label) {
+			this.label = label;
+
+			dropTarget = new DropTarget(label, DnDConstants.ACTION_COPY, this,
+					true, null);
+		}
+
+		@Override
+		public void drop(DropTargetDropEvent event) {
+
+			try {
+				Transferable tr = event.getTransferable();
+				selectedAction = (String) tr
+						.getTransferData(DataFlavor.stringFlavor);
+
+				if (event.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+
+					event.acceptDrop(DnDConstants.ACTION_COPY);
+
+					edp.actionPerformed();
+					event.dropComplete(true);
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				event.rejectDrop();
+			}
+
+		}
+
+		class TransferableString implements Transferable {
+
+			protected DataFlavor stringFlavor = new DataFlavor(String.class,
+					"A String Object");
+
+			public TransferableString(String string) {
+				this.action = string;
+			}
+
+			protected DataFlavor[] supportedFlavors = { DataFlavor.stringFlavor };
+			String action;
+
+			@Override
+			public DataFlavor[] getTransferDataFlavors() {
+				return supportedFlavors;
+			}
+
+			@Override
+			public boolean isDataFlavorSupported(DataFlavor flavor) {
+				if (flavor.equals(DataFlavor.stringFlavor))
+					return true;
+
+				return false;
+			}
+
+			@Override
+			public Object getTransferData(DataFlavor flavor)
+					throws UnsupportedFlavorException, IOException {
+				if (flavor.equals(DataFlavor.stringFlavor))
+					return action;
+
+				else
+					throw new UnsupportedFlavorException(flavor);
+			}
+		}
+
+	}
+
 	@Override
 	public void dragEnter(DragSourceDragEvent dsde) {
-		System.out.println("Drag Enter");
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dragOver(DragSourceDragEvent dsde) {
-		System.out.println("Drag Over");
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dropActionChanged(DragSourceDragEvent dsde) {
-		System.out.println("Drop Action Changed");
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dragExit(DragSourceEvent dse) {
-		System.out.println("Drag Exit");
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dragDropEnd(DragSourceDropEvent dsde) {
-		System.out.print("Drag Drop End: ");
-		if (dsde.getDropSuccess()) {
-			System.out.println("Succeeded");
-		} else {
-			System.out.println("Failed");
-		}
-	}
+		// TODO Auto-generated method stub
 
-	public String getNameMission() {
-		return nameMission;
-	}
-
-	public void setNameMission(String nameMission) {
-		this.nameMission = nameMission;
-	}
-
-	class TransferableString implements Transferable {
-
-		protected DataFlavor stringFlavor = new DataFlavor(String.class,
-				"A String Object");
-
-		public TransferableString(String string) {
-			this.action = string;
-		}
-
-		protected DataFlavor[] supportedFlavors = { DataFlavor.stringFlavor };
-		String action;
-
-		@Override
-		public DataFlavor[] getTransferDataFlavors() {
-			return supportedFlavors;
-		}
-
-		@Override
-		public boolean isDataFlavorSupported(DataFlavor flavor) {
-
-			if (flavor.equals(DataFlavor.stringFlavor))
-				return true;
-
-			return false;
-		}
-
-		@Override
-		public Object getTransferData(DataFlavor flavor)
-				throws UnsupportedFlavorException, IOException {
-
-			if (flavor.equals(DataFlavor.stringFlavor))
-				return action;
-
-			else
-				throw new UnsupportedFlavorException(flavor);
-		}
 	}
 
 	// drag and drop listeners
-
-	public void setDropTargetListener() {
-
-		label.setDropTarget(new DropTarget());
-
-	}
 
 	public String showItemsPanel(List<String> items) {
 		ArrayList<String> choices = new ArrayList<String>();
@@ -274,10 +315,27 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 		String text3 = JOptionPane
 				.showInputDialog("Indicate the delay for the trip");
-		if (text3 != null)
-			return Integer.parseInt(text3.trim());
 
-		return 0;
+		String delay = text3.trim();
+		
+		if (delay.isEmpty())
+			return 0;
+
+		else
+		return Integer.parseInt(delay);
+
+	}
+
+	public void fillTripList(String name) {
+		model1.addElement(name);
+	}
+	public void setExportDoneActionListener(ExportDoneListener listener) {
+		edp = listener;
+
+	}
+
+	public String getAction() {
+		return selectedAction;
 	}
 
 	// ok button
@@ -297,10 +355,10 @@ public class TripsPage extends JFrame implements DragSourceListener,
 		delete.addActionListener(listener);
 
 	}
-	
-	
-	public void deleteAllTrips(){
-		//TODO
+
+	public void deleteAllTrips() {
+		model1.removeAllElements();
 	}
+
 
 }

@@ -15,8 +15,7 @@ public class MissionPageController {
 	private MissionsPage missionPage;
 	List<Mission> missions;
 
-	public MissionPageController(MissionsPage view, List<Item> items,
-			List<Drone> drones) {
+	public MissionPageController(MissionsPage view) {
 
 		this.missionPage = view;
 		this.missionPage
@@ -40,12 +39,14 @@ public class MissionPageController {
 		public void actionPerformed(ActionEvent e) {
 			Mission m = new Mission();
 			String name = missionPage.showNewNamePanel("Write mission name");
+			if (name!=""){
 			m.setName(name);
 			if (missions == null)
 				missions = new ArrayList<Mission>();
 			missions.add(m);
 
 			missionPage.addMissionToList(name);
+		}
 		}
 
 	}

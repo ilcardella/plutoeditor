@@ -27,15 +27,6 @@ public class Mission {
 		this.trips = new ArrayList<Trip>();
 
 	}
-	
-	public Mission(String name) {
-
-		this.name=name;
-		this.id= new Random().nextInt(Integer.MAX_VALUE) +1;
-		this.status= UNEXECUTED;
-		this.trips = new ArrayList<Trip>();
-
-	}
 
 	public int getId() {
 		return id;

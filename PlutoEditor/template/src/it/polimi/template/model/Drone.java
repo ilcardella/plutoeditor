@@ -1,6 +1,11 @@
 package it.polimi.template.model;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.Timer;
 
 public class Drone {
 
@@ -18,10 +23,9 @@ public class Drone {
 	private int shapeCategory;
 	private int batteryLevel;
 
-
 	public Drone() {
-		this.id = new Random().nextInt(Integer.MAX_VALUE) +1;
-		this.status=5;
+		this.id = new Random().nextInt(Integer.MAX_VALUE) + 1;
+		this.status = 5;
 	}
 
 	public int getId() {
@@ -55,17 +59,19 @@ public class Drone {
 	public void setBatteryLevel(int batteryLevel) {
 		this.batteryLevel = batteryLevel;
 	}
-	
-	
-	public boolean flyToAndDoAction(String target, Action action){
-		//TODO
+
+	public boolean flyToAndDoAction(String target, final Action action) {
+		this.flyTo(target);
+		action.doAction();
+		return true;
+	}
+
+	private boolean flyTo(String target) {
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		action.doAction();
-		this.status=Drone.FREE;
 		return true;
 	}
 }

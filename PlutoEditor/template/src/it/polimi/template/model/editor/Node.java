@@ -5,6 +5,5 @@ import it.polimi.template.model.*;
 public interface Node {
 	
 	public Mission run(Mission m);
-	
 
 }

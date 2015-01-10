@@ -1,14 +1,12 @@
 package it.polimi.template.controller;
 
-import it.polimi.template.controller.thread.WorkerThread;
+import it.polimi.template.controller.thread.MyWorker;
 import it.polimi.template.model.Mission;
 import it.polimi.template.view.MonitorPage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MonitorPageController {
 
@@ -28,17 +26,28 @@ public class MonitorPageController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ExecutorService executor = Executors.newFixedThreadPool(missions
-					.size());
-			for (int i = 0; i < missions.size(); i++) {
-				Runnable worker = new WorkerThread(missions.get(i));
-				executor.execute(worker);
-			}
-			executor.shutdown();
-			while (!executor.isTerminated()) {
-			}
-			System.out.println("Finished all threads");
+			launchExecution();
 		}
+	}
+
+	protected void launchExecution() {
+//		ExecutorService executor = Executors
+//				.newFixedThreadPool(missions.size());
+//		for (int i = 0; i < missions.size(); i++) {
+//			Runnable worker = new WorkerThread(missions.get(i), this);
+//			executor.execute(worker);
+//		}
+//		executor.shutdown();
+//		while (!executor.isTerminated()) {
+//		}
+//		System.out.println("Finished all threads");
+		
+		for (int i = 0; i < missions.size(); i++) {
+			MyWorker worker = new MyWorker(missions.get(i), this);
+			worker.execute();
+		}
+		
+
 	}
 
 	class StopButtonListener implements ActionListener {
@@ -48,6 +57,43 @@ public class MonitorPageController {
 			// TODO Stop all the drones
 			monitorPage.clearTable();
 		}
+	}
+
+	public void notifyUpdateOfStatus(Mission mission) {
+
+		String missionName = "";
+		int missionStatus = 0;
+		String tripName = "";
+		int tripStatus = 0;
+		int droneID = 0;
+		int droneStatus = 0;
+
+		if (mission.getTrips().size() > 0) {
+
+			// If there are other trips to complete
+			missionName = mission.getName();
+			missionStatus = mission.getStatus();
+			tripName = mission.getTrips().get(0).getName();
+			tripStatus = mission.getTrips().get(0).getStatus();
+
+			if (mission.getTrips().get(0).getDrone() != null) {
+				droneID = mission.getTrips().get(0).getDrone().getId();
+				droneStatus = mission.getTrips().get(0).getDrone().getStatus();
+			}
+
+		} else {
+			// If it is the last update
+			missionName = mission.getName();
+			missionStatus = mission.getStatus();
+		}
+
+		this.monitorPage.fillConsole("MissionName = " + missionName
+				+ ", MissionStatus = " + missionStatus + ", DroneID = "
+				+ droneID + ", DroneStatus = " + droneStatus + ", TripName = "
+				+ tripName + ", TripStatus = " + tripStatus + '\n');
+		
+		this.monitorPage.updateTableRow(missionName, missionStatus, droneID, droneStatus, tripName, tripStatus);
+		
 	}
 
 }
