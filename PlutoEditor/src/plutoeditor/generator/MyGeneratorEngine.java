@@ -52,7 +52,7 @@ public class MyGeneratorEngine {
 				unzipper.unzip(inputStream, parentFolder.getCanonicalPath());
 
 				// add the model-dependent code to the generated file
-				// TODO generateModelCodeInTemplateApp();
+				generateModelCodeInTemplateApp();
 
 				System.out.println("Code generated in: "
 						+ parentFolder.getAbsolutePath());
@@ -72,7 +72,7 @@ public class MyGeneratorEngine {
 		String fileAsString = null; // String representation of the file
 		// TODO caricare in modelfile il file da modificare
 		File modelFile = new File(parentFolder.getAbsolutePath()
-				+ "/MyTemplate.java");
+				+ "/src/it/polimi/template/controller/thread/MyWorker.java");
 
 		try {
 
