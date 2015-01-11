@@ -4,26 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
-
 public class Mission {
-	
+
 	public static final int UNEXECUTED = 1;
 	public static final int RUNNING = 2;
 	public static final int COMPLETED = 3;
 	public static final int FAILED = 4;
 	public static final int STANDBY = 5;
 
-	private int  id;
+	private int id;
 	private String name;
 	private int status;
 	private List<Trip> trips;
-	private boolean used= false;
+	private boolean used = false;
 
 	public Mission() {
 
-		this.id= new Random().nextInt(Integer.MAX_VALUE) +1;
-		this.status= UNEXECUTED;
+		this.id = new Random().nextInt(Integer.MAX_VALUE) + 1;
+		this.status = UNEXECUTED;
 		this.trips = new ArrayList<Trip>();
 
 	}
@@ -68,8 +66,22 @@ public class Mission {
 		this.used = used;
 	}
 
+	public static String getStatusNameFromValue(int value) {
 
-
-
+		switch (value) {
+			case UNEXECUTED:
+				return "UNEXECUTED";
+			case RUNNING:
+				return "RUNNING";
+			case COMPLETED:
+				return "COMPLETED";
+			case FAILED:
+				return "FAILED";
+			case STANDBY:
+				return "STANDBY";
+			default:
+				return "Unknown";
+		}
+	}
 
 }

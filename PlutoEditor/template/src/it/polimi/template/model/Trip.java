@@ -1,7 +1,5 @@
 package it.polimi.template.model;
 
-import java.util.Comparator;
-
 public class Trip  {
 
 	public static final int WAITING = 1;
@@ -125,7 +123,23 @@ public class Trip  {
 		this.action = action;
 	}
 
+	public static String getStatusNameFromValue(int value) {
 
+		switch (value) {
+			case WAITING:
+				return "WAITING";
+			case EXECUTING:
+				return "EXECUTING";
+			case COMPLETED:
+				return "COMPLETED";
+			case FAILED:
+				return "FAILED";
+			case DELAYED:
+				return "DELAYED";
+			default:
+				return "Unknown";
+		}
+	}
 
 
 

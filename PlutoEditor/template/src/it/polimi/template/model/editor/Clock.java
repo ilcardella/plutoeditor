@@ -2,29 +2,31 @@ package it.polimi.template.model.editor;
 
 import it.polimi.template.model.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.Timer;
-
 public class Clock implements Node {
-	
+
 	ArrayList<Drone> drones = new ArrayList<Drone>();
 
 	@Override
-	public Mission run(final Mission m) {
-		
+	public Mission run(Mission m) {
 
-		for (Trip t : m.getTrips())
-			if (t.getDelay() > 0){
-		
-	}
+		// get the next trip
+		Trip t = m.getTrips().get(0);
+
+		// if delay > 0 change the status
+		if (t.getDelay() > 0) {
+			t.setStatus(Trip.DELAYED);
+			System.out.println("Trip " + t.getName() + " is delayed");
+			try {
+				Thread.sleep(t.getDelay()*1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			t.setStatus(Trip.WAITING);
+		}
+
 		return m;
-	}
-	
-	public Clock(ArrayList<Drone> drones){
-		this.drones=drones;
 	}
 
 }

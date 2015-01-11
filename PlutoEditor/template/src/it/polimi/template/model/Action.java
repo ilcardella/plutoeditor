@@ -20,6 +20,11 @@ public enum Action implements IAction {
 			return "Take photo";
 		}
 
+		@Override
+		public boolean isItemRequired() {
+			return false;
+		}
+
 	},
 	MEASURE {
 
@@ -36,6 +41,11 @@ public enum Action implements IAction {
 		@Override
 		public String toString() {
 			return "Measure";
+		}
+
+		@Override
+		public boolean isItemRequired() {
+			return false;
 		}
 
 	},
@@ -56,6 +66,11 @@ public enum Action implements IAction {
 			return "Pick item";
 		}
 
+		@Override
+		public boolean isItemRequired() {
+			return true;
+		}
+
 	},
 	RELEASE_ITEM {
 
@@ -72,6 +87,11 @@ public enum Action implements IAction {
 		@Override
 		public String toString() {
 			return "Release item";
+		}
+
+		@Override
+		public boolean isItemRequired() {
+			return true;
 		}
 
 	};

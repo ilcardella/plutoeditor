@@ -1,19 +1,15 @@
 package it.polimi.template.view;
 
-import it.polimi.template.model.*;
+import static javax.swing.GroupLayout.Alignment.LEADING;
 
-import javax.swing.JFrame;
 import java.awt.Container;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.awt.event.MouseListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
-import static javax.swing.GroupLayout.Alignment.LEADING;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -23,8 +19,8 @@ public class MissionsPage extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private DefaultListModel model;
-	private JList list;
+	private DefaultListModel<String> model;
+	private JList<String> list;
 	private JButton remallbtn;
 	private JButton addbtn;
 	private JButton renbtn;
@@ -38,36 +34,9 @@ public class MissionsPage extends JFrame {
 
 	private void createList() {
 
-		model = new DefaultListModel();
-		list = new JList(model);
+		model = new DefaultListModel<String>();
+		list = new JList<String>(model);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		list.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if (e.getClickCount() == 2) {
-					int index = list.locationToIndex(e.getPoint());
-					Object item = model.getElementAt(index);
-					String text = JOptionPane.showInputDialog("Rename item",
-							item);
-					String newitem = null;
-					if (text != null) {
-						newitem = text.trim();
-					} else {
-						return;
-					}
-
-					if (!newitem.isEmpty()) {
-						model.remove(index);
-						model.add(index, newitem);
-						ListSelectionModel selmodel = list.getSelectionModel();
-						selmodel.setLeadSelectionIndex(index);
-					}
-				}
-			}
-		});
 	}
 
 	private void createButtons() {
@@ -142,7 +111,7 @@ public class MissionsPage extends JFrame {
 		return missionName;
 	}
 
-	public void addMissionButtonListener(ActionListener listener) {
+	public void setAddMissionButtonListener(ActionListener listener) {
 		addbtn.addActionListener(listener);
 	}
 
@@ -173,7 +142,7 @@ public class MissionsPage extends JFrame {
 		model.remove(index);
 	}
 
-	public void deleteMissionButtonListener(ActionListener listener) {
+	public void setDeleteMissionButtonListener(ActionListener listener) {
 		delbtn.addActionListener(listener);
 	}
 
@@ -184,13 +153,13 @@ public class MissionsPage extends JFrame {
 		model.clear();
 	}
 
-	public void removeAllMissionButtonListener(ActionListener listener) {
+	public void setRemoveAllMissionButtonListener(ActionListener listener) {
 		remallbtn.addActionListener(listener);
 	}
 
 	// rename button
 
-	public void renameButtonListener(ActionListener listener) {
+	public void setRenameButtonListener(ActionListener listener) {
 		renbtn.addActionListener(listener);
 	}
 
@@ -206,15 +175,19 @@ public class MissionsPage extends JFrame {
 
 	// set trips button
 
-	public void setTripsListener(ActionListener listener) {
+	public void setTripsButtonListener(ActionListener listener) {
 		tpsbtn.addActionListener(listener);
 	}
-	
-	//ok button 
 
-	public void missionsPageOkButtonListener(ActionListener listener) {
+	// ok button
+
+	public void setMissionsPageOkButtonListener(ActionListener listener) {
 		okbtn.addActionListener(listener);
 
+	}
+
+	public void setListMouseListener(MouseListener listener) {
+		list.addMouseListener(listener);
 	}
 
 }

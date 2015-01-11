@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -48,11 +47,11 @@ public class TripsPage extends JFrame implements DragSourceListener,
 		 * 
 		 */
 	private static final long serialVersionUID = 1L;
-	private DefaultListModel model;
-	private DefaultListModel model1;
+	private DefaultListModel<String> model;
+	private DefaultListModel<String> model1;
 
-	private JList list;
-	private JList tripList;
+	private JList<String> list;
+	private JList<String> tripList;
 
 	private ExportDoneListener edp;
 
@@ -60,6 +59,7 @@ public class TripsPage extends JFrame implements DragSourceListener,
 	private JButton ok;
 	private JButton delete;
 
+	List<String> tripsNames;
 	private String nameMission;
 	private String selectedAction;
 	private ImageIcon icon;
@@ -67,8 +67,9 @@ public class TripsPage extends JFrame implements DragSourceListener,
 	DragSource ds;
 	StringSelection transferable;
 
-	public TripsPage(String name) {
+	public TripsPage(String name, List<String> tripsNames) {
 		this.nameMission = name;
+		this.tripsNames = tripsNames;
 
 		try {
 			initUI();
@@ -79,8 +80,8 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 	private void createActionList() {
 
-		model = new DefaultListModel();
-		list = new JList(model);
+		model = new DefaultListModel<String>();
+		list = new JList<String>(model);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setDragEnabled(true);
 		list.setTransferHandler(new TransferHandler("text"));
@@ -92,9 +93,12 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 	private void createTripList() {
 
-		model1 = new DefaultListModel();
-		tripList = new JList(model1);
+		model1 = new DefaultListModel<String>();
+		tripList = new JList<String>(model1);
 		tripList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		for(String name: tripsNames){
+			 model1.addElement(name);
+		}
 
 	}
 
@@ -159,13 +163,8 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 	private class MyDropTargetListener extends DropTargetAdapter {
 
-		private DropTarget dropTarget;
-		private JLabel label;
-
 		public MyDropTargetListener(JLabel label) {
-			this.label = label;
-
-			dropTarget = new DropTarget(label, DnDConstants.ACTION_COPY, this,
+			new DropTarget(label, DnDConstants.ACTION_COPY, this,
 					true, null);
 		}
 
@@ -192,73 +191,22 @@ public class TripsPage extends JFrame implements DragSourceListener,
 
 		}
 
-		class TransferableString implements Transferable {
-
-			protected DataFlavor stringFlavor = new DataFlavor(String.class,
-					"A String Object");
-
-			public TransferableString(String string) {
-				this.action = string;
-			}
-
-			protected DataFlavor[] supportedFlavors = { DataFlavor.stringFlavor };
-			String action;
-
-			@Override
-			public DataFlavor[] getTransferDataFlavors() {
-				return supportedFlavors;
-			}
-
-			@Override
-			public boolean isDataFlavorSupported(DataFlavor flavor) {
-				if (flavor.equals(DataFlavor.stringFlavor))
-					return true;
-
-				return false;
-			}
-
-			@Override
-			public Object getTransferData(DataFlavor flavor)
-					throws UnsupportedFlavorException, IOException {
-				if (flavor.equals(DataFlavor.stringFlavor))
-					return action;
-
-				else
-					throw new UnsupportedFlavorException(flavor);
-			}
-		}
-
 	}
 
 	@Override
-	public void dragEnter(DragSourceDragEvent dsde) {
-		// TODO Auto-generated method stub
-
-	}
+	public void dragEnter(DragSourceDragEvent dsde) {}
 
 	@Override
-	public void dragOver(DragSourceDragEvent dsde) {
-		// TODO Auto-generated method stub
-
-	}
+	public void dragOver(DragSourceDragEvent dsde) {}
 
 	@Override
-	public void dropActionChanged(DragSourceDragEvent dsde) {
-		// TODO Auto-generated method stub
-
-	}
+	public void dropActionChanged(DragSourceDragEvent dsde) {}
 
 	@Override
-	public void dragExit(DragSourceEvent dse) {
-		// TODO Auto-generated method stub
-
-	}
+	public void dragExit(DragSourceEvent dse) {}
 
 	@Override
-	public void dragDropEnd(DragSourceDropEvent dsde) {
-		// TODO Auto-generated method stub
-
-	}
+	public void dragDropEnd(DragSourceDropEvent dsde) {}
 
 	// drag and drop listeners
 
