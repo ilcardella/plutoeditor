@@ -65,10 +65,18 @@ public class MyGeneratorEngine {
 		// resource path from template folder)
 		//generateTemplateFile("/MyTemplate.java", "/template/MyTemplate.java");
 		try {
-			URL sourcePath = getClass().getProtectionDomain().getCodeSource().getLocation();
 			URL url = getClass().getResource("/template/src");
-			url = new URL(sourcePath.toString()+url.toString());
-			File srcDir = new File(new File(url.toURI()).getAbsolutePath());
+			if (url == null) {
+			     // error - missing folder
+			} else {
+			    File dir = new File(url.toURI());
+			    for (File nextFile : dir.listFiles()) {
+			        // Do something with nextFile
+			    	System.out.println(nextFile.getName());
+			    }
+			}
+			
+			File srcDir = new File(url.toURI());
 			File destDir = new File(parentFolder.getAbsolutePath());
 			copy(srcDir, destDir);
 		} catch (Exception e) {
