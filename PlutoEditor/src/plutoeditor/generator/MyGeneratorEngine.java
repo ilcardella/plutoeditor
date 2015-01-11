@@ -100,6 +100,9 @@ public class MyGeneratorEngine {
 			List<Node> children = diagram.getChildrenNodes();
 			sb = new StringBuilder();
 
+			// TODO cambiare qui: essendo che per default il modello base è già presente
+			// nella template app, qui bisogna controllare se nel diagramma c'è il clock 
+			// il priority manager ed i mission modifier. In tal caso aggiungerli alla linea
 			for (Node n : children) {
 				// Create the line to add
 
