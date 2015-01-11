@@ -10,10 +10,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import plutoeditor.generator.utils.UnzipUtility;
 import plutoeditor.model.editor.*;
 
 public class MyGeneratorEngine {
@@ -41,8 +44,12 @@ public class MyGeneratorEngine {
 				// the code
 				parentFolder = fileChooser.getSelectedFile();
 
-				// Generate the template app in the destination folder
-				generateTemplateApp();
+				// Extract the template app in the destination folder
+				UnzipUtility unzipper = new UnzipUtility();
+				InputStream inputStream = getClass()
+						.getResource("/template/template.zip").openConnection()
+						.getInputStream();
+				unzipper.unzip(inputStream, parentFolder.getCanonicalPath());
 
 				// add the model-dependent code to the generated file
 				// TODO generateModelCodeInTemplateApp();
@@ -56,87 +63,6 @@ public class MyGeneratorEngine {
 			}
 		}
 	}
-
-	// This method copy the content from the input stream to the output file
-	// stream
-	private void generateTemplateApp() {
-
-		// ex: generateTemplateFile( physical name of the file,
-		// resource path from template folder)
-		//generateTemplateFile("/MyTemplate.java", "/template/MyTemplate.java");
-		try {
-			URL url = getClass().getResource("/template/src");
-			if (url == null) {
-			     // error - missing folder
-			} else {
-			    File dir = new File(url.toURI());
-			    for (File nextFile : dir.listFiles()) {
-			        // Do something with nextFile
-			    	System.out.println(nextFile.getName());
-			    }
-			}
-			
-			File srcDir = new File(url.toURI());
-			File destDir = new File(parentFolder.getAbsolutePath());
-			copy(srcDir, destDir);
-		} catch (Exception e) {
-			System.out.println("Error copying the template App");
-			e.printStackTrace();
-		}
-
-	}
-
-//	private void generateTemplateFile(String physicalName, String resourcePath) {
-//		InputStream templateInputStream = null;
-//		FileOutputStream fileOutputStream = null;
-//		String physicalPath = parentFolder.getAbsolutePath() + physicalName;
-//
-//		try {
-//			File f = new File(physicalPath);
-//			if (!f.exists()) {
-//				f.getParentFile().mkdirs(); // Create parent folders if needed
-//				f.createNewFile(); // Create the file itself
-//			}
-//			// Getting the inputstream of the java file to generate
-//			templateInputStream = getClass().getResource(resourcePath)
-//					.openConnection().getInputStream();
-//
-//			// the output is the file with the generated code
-//			fileOutputStream = new FileOutputStream(f);
-//
-//			// copy the inputstream to the outputstream
-//			int read = 0;
-//			byte[] bytes = new byte[1024];
-//			while ((read = templateInputStream.read(bytes)) != -1) {
-//				fileOutputStream.write(bytes, 0, read);
-//			}
-//
-//		} catch (IOException e) {
-//			System.out.println("Error copying from template file.");
-//			e.printStackTrace();
-//		} finally {
-//			if (templateInputStream != null) {
-//				try {
-//					templateInputStream.close();
-//				} catch (IOException e) {
-//					System.out
-//							.println("Error closing the template templateInputStream.");
-//					e.printStackTrace();
-//				}
-//			}
-//			if (fileOutputStream != null) {
-//				try {
-//					fileOutputStream.flush();
-//					fileOutputStream.close();
-//				} catch (IOException e) {
-//					System.out.println("Error closing the outputStream.");
-//					e.printStackTrace();
-//				}
-//
-//			}
-//		}
-//
-//	}
 
 	// This method looks for the tags in the fileToSave object and change them
 	// with the code generated from the model diagram
@@ -222,38 +148,6 @@ public class MyGeneratorEngine {
 		String[] splittedName = className.split("\\.");
 		String name = splittedName[splittedName.length - 1];
 		return name;
-	}
-
-	// ------------------------------------------------------
-
-	public void copy(File sourceLocation, File targetLocation)
-			throws IOException {
-		if (sourceLocation.isDirectory()) {
-			copyDirectory(sourceLocation, targetLocation);
-		} else {
-			copyFile(sourceLocation, targetLocation);
-		}
-	}
-
-	private void copyDirectory(File source, File target) throws IOException {
-		if (!target.exists()) {
-			target.mkdir();
-		}
-
-		for (String f : source.list()) {
-			copy(new File(source, f), new File(target, f));
-		}
-	}
-
-	private void copyFile(File source, File target) throws IOException {
-		try (InputStream in = new FileInputStream(source);
-				OutputStream out = new FileOutputStream(target)) {
-			byte[] buf = new byte[1024];
-			int length;
-			while ((length = in.read(buf)) > 0) {
-				out.write(buf, 0, length);
-			}
-		}
 	}
 
 } // End
