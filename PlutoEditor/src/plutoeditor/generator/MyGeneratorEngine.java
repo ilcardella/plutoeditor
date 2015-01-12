@@ -70,7 +70,6 @@ public class MyGeneratorEngine {
 		FileInputStream fileInputStream = null;
 		FileOutputStream fileOutputStream = null;
 		String fileAsString = null; // String representation of the file
-		// TODO caricare in modelfile il file da modificare
 		File modelFile = new File(parentFolder.getAbsolutePath()
 				+ "/src/it/polimi/template/controller/thread/MyWorker.java");
 
@@ -98,23 +97,41 @@ public class MyGeneratorEngine {
 
 			// Filling the declaration tag in the template
 			List<Node> children = diagram.getChildrenNodes();
-			sb = new StringBuilder();
+			StringBuilder decStringBuilder = new StringBuilder();
+			StringBuilder exeStringBuilder = new StringBuilder();
+			Node firstNode = null;
 
-			// TODO cambiare qui: essendo che per default il modello base è già presente
-			// nella template app, qui bisogna controllare se nel diagramma c'è il clock 
-			// il priority manager ed i mission modifier. In tal caso aggiungerli alla linea
 			for (Node n : children) {
-				// Create the line to add
-
+				// Create the lines to add in declaration space
 				String name = getClassNameFromObject(n);
 				String line = name + " " + name.toLowerCase() + " = new "
 						+ name + "();";
-				sb.append(line);
-				sb.append('\n');
-			}
+				decStringBuilder.append(line);
+				decStringBuilder.append('\n');
 
-			// Write the line to the fileAsString
-			fileAsString = fileAsString.replaceAll("\\<dec>", sb.toString());
+				// Create the lines to add in execution space
+				List<Connection> srcConn = n.getSourceConnections();
+				// for each outgoing connections
+				for (Connection c : srcConn) {
+					// These lines will register the observers of each block
+					exeStringBuilder.append(name + ".addObserver("
+							+ getClassNameFromObject(c.getTargetNode()) + ");");
+					exeStringBuilder.append('\n');
+				}
+				
+				// looking for the first node
+				if(n.getTargetConnections() == null || n.getTargetConnections().size() == 0){
+					firstNode = n;
+				}
+			}
+			// This line will launch the first block
+			exeStringBuilder.append(getClassNameFromObject(firstNode)+".run(m);");
+			
+			// Write the lines to the fileAsString replacing the tags
+			fileAsString = fileAsString.replaceAll("\\/*<dec>*/",
+					decStringBuilder.toString());
+			fileAsString = fileAsString.replaceAll("\\/*<exe>*/",
+					exeStringBuilder.toString());
 
 			// Convert string to byte[] and write to the outputStream
 			byte[] fileStringInBytes = fileAsString.getBytes();
