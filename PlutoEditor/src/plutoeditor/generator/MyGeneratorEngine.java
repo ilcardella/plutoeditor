@@ -125,7 +125,7 @@ public class MyGeneratorEngine {
 				}
 			}
 			// This line will launch the first block
-			exeStringBuilder.append(getClassNameFromObject(firstNode).toLowerCase()+".run(m);");
+			exeStringBuilder.append(getClassNameFromObject(firstNode).toLowerCase()+".update(null, m);");
 			
 			// Write the lines to the fileAsString replacing the tags
 			fileAsString = fileAsString.replaceAll("\\<dec>",
