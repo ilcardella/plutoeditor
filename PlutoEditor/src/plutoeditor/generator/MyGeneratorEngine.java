@@ -99,7 +99,7 @@ public class MyGeneratorEngine {
 			List<Node> children = diagram.getChildrenNodes();
 			StringBuilder decStringBuilder = new StringBuilder();
 			StringBuilder exeStringBuilder = new StringBuilder();
-			Node firstNode = null;
+			Node firstNode = children.get(0); // Usually the first node is the first in the list
 
 			for (Node n : children) {
 				// Create the lines to add in declaration space
@@ -114,8 +114,8 @@ public class MyGeneratorEngine {
 				// for each outgoing connections
 				for (Connection c : srcConn) {
 					// These lines will register the observers of each block
-					exeStringBuilder.append(name + ".addObserver("
-							+ getClassNameFromObject(c.getTargetNode()) + ");");
+					exeStringBuilder.append(name.toLowerCase() + ".addObserver("
+							+ getClassNameFromObject(c.getTargetNode()).toLowerCase() + ");");
 					exeStringBuilder.append('\n');
 				}
 				
@@ -125,7 +125,7 @@ public class MyGeneratorEngine {
 				}
 			}
 			// This line will launch the first block
-			exeStringBuilder.append(getClassNameFromObject(firstNode)+".run(m);");
+			exeStringBuilder.append(getClassNameFromObject(firstNode).toLowerCase()+".run(m);");
 			
 			// Write the lines to the fileAsString replacing the tags
 			fileAsString = fileAsString.replaceAll("\\<dec>",
