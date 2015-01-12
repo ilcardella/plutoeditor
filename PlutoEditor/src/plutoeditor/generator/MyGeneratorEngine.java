@@ -128,9 +128,9 @@ public class MyGeneratorEngine {
 			exeStringBuilder.append(getClassNameFromObject(firstNode)+".run(m);");
 			
 			// Write the lines to the fileAsString replacing the tags
-			fileAsString = fileAsString.replaceAll("\\/*<dec>*/",
+			fileAsString = fileAsString.replaceAll("\\<dec>",
 					decStringBuilder.toString());
-			fileAsString = fileAsString.replaceAll("\\/*<exe>*/",
+			fileAsString = fileAsString.replaceAll("\\<exe>",
 					exeStringBuilder.toString());
 
 			// Convert string to byte[] and write to the outputStream
