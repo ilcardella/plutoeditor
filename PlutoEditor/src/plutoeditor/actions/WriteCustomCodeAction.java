@@ -1,7 +1,11 @@
 package plutoeditor.actions;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.swing.JFrame;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
@@ -18,6 +22,7 @@ import plutoeditor.view.frame.CustomCodeFrame;
 public class WriteCustomCodeAction extends SelectionAction {
 
 	public static final String WRITE_CUSTOM_CODE_ID = "write_custom_code";
+	private CustomCodeFrame frame;
 
 	public WriteCustomCodeAction(IWorkbenchPart part) {
 		super(part);
@@ -63,13 +68,18 @@ public class WriteCustomCodeAction extends SelectionAction {
 
 	public void run() {
 		MissionModifier node = getSelectedNode();
-		CustomCodeFrame frame = new CustomCodeFrame(node.getCustomCode());
-		// TODO set attribute to the frame
+		this.frame = new CustomCodeFrame(node.getCustomCode());
+		setListenersForFrameButtons();
 		frame.setVisible(true);
-
-		String code = "";// TODO get the code from the frame
+	}
+	
+	public void finishRun(String code){
 		execute(createWriteCustomCodeCommand(code));
+	}
 
+	private void setListenersForFrameButtons() {
+		frame.setSaveButtonListener(new SaveButtonListener());
+		frame.setCancelButtonListener(new CancelButtonListener());
 	}
 
 	private MissionModifier getSelectedNode() {
@@ -80,6 +90,22 @@ public class WriteCustomCodeAction extends SelectionAction {
 			return null;
 		EditPart part = (EditPart) objects.get(0);
 		return (MissionModifier) part.getModel();
+	}
+	
+	class SaveButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			String code = frame.getTextFromTextArea();
+			finishRun(code);
+		}
+	}
+	
+	class CancelButtonListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frame.dispose();
+			frame.setVisible(false);
+		}
 	}
 
 }
