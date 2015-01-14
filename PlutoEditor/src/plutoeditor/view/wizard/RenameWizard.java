@@ -1,4 +1,4 @@
-package plutoeditor.wizard;
+package plutoeditor.view.wizard;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;

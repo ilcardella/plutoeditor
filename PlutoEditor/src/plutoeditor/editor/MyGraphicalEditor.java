@@ -52,6 +52,7 @@ import plutoeditor.actions.GenerateCodeAction;
 import plutoeditor.actions.LoadDiagramAction;
 import plutoeditor.actions.RenameAction;
 import plutoeditor.actions.SaveDiagramAction;
+import plutoeditor.actions.WriteCustomCodeAction;
 import plutoeditor.commands.save.SaveDiagramCommand;
 import plutoeditor.contextmenu.AppContextMenuProvider;
 import plutoeditor.creationfactory.NodeCreationFactory;
@@ -279,6 +280,10 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 
 		action = new LoadDiagramAction(this);
 		registry.registerAction(action);
+		
+		action = new WriteCustomCodeAction(this);
+		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
 	}
 
 	@Override

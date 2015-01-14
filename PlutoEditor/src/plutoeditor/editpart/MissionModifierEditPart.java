@@ -37,7 +37,7 @@ public class MissionModifierEditPart extends AppAbstractEditPart implements Node
 		installEditPolicy(EditPolicy.NODE_ROLE, new AppRenamePolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
 				new AppConnectionPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new AppWriteCustomCodeEditPolicy());
+		installEditPolicy(EditPolicy.NODE_ROLE, new AppWriteCustomCodeEditPolicy());
 	}
 
 	protected void refreshVisuals() {

@@ -10,8 +10,9 @@ import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
+
 import plutoeditor.model.editor.Node;
-import plutoeditor.wizard.RenameWizard;
+import plutoeditor.view.wizard.RenameWizard;
 
 public class RenameAction extends SelectionAction {
 

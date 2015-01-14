@@ -12,8 +12,15 @@ public class MissionModifier extends Node {
 
 	@Override
 	public Mission run(Mission m) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getCustomCode() {
+		return customCode;
+	}
+
+	public void setCustomCode(String customCode) {
+		this.customCode = customCode;
 	}
 
 }
