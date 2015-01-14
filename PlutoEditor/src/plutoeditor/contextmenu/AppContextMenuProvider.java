@@ -11,6 +11,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import plutoeditor.actions.GenerateCodeAction;
 import plutoeditor.actions.LoadDiagramAction;
 import plutoeditor.actions.SaveDiagramAction;
+import plutoeditor.actions.WriteCustomCodeAction;
 
 public class AppContextMenuProvider extends ContextMenuProvider {
 
@@ -41,6 +42,9 @@ public class AppContextMenuProvider extends ContextMenuProvider {
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 		
 		action = getActionRegistry().getAction(LoadDiagramAction.LOAD_DIAGRAM_ID);
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		
+		action = getActionRegistry().getAction(WriteCustomCodeAction.WRITE_CUSTOM_CODE_ID);
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 	}
 

@@ -19,6 +19,7 @@ import org.eclipse.gef.Request;
 import plutoeditor.editpolicies.AppDeletePolicy;
 import plutoeditor.editpolicies.AppEditLayoutPolicy;
 import plutoeditor.editpolicies.AppRenamePolicy;
+import plutoeditor.editpolicies.AppWriteCustomCodeEditPolicy;
 import plutoeditor.figure.MissionModifierFigure;
 
 public class MissionModifierEditPart extends AppAbstractEditPart implements NodeEditPart {
@@ -36,6 +37,7 @@ public class MissionModifierEditPart extends AppAbstractEditPart implements Node
 		installEditPolicy(EditPolicy.NODE_ROLE, new AppRenamePolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
 				new AppConnectionPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new AppWriteCustomCodeEditPolicy());
 	}
 
 	protected void refreshVisuals() {

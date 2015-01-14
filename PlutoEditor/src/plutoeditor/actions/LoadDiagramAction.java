@@ -14,7 +14,6 @@ public class LoadDiagramAction extends EditorPartAction {
 		setText("Load Diagram...");
 		setId(LOAD_DIAGRAM_ID);
 		setToolTipText("Load a diagram");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
