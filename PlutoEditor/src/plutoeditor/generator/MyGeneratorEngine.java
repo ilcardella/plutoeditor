@@ -205,6 +205,7 @@ public class MyGeneratorEngine {
 			    dialog.getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			    dialog.setDefaultCloseOperation(dialog.DISPOSE_ON_CLOSE);
 			    dialog.pack(); 
+			    dialog.setLocationRelativeTo(null);
 			    dialog.setVisible(true);
 				
 			}
