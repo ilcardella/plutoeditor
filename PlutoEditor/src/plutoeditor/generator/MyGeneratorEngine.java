@@ -1,5 +1,8 @@
 package plutoeditor.generator;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,8 +16,13 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import plutoeditor.generator.utils.UnzipUtility;
 import plutoeditor.model.editor.*;
@@ -54,12 +62,15 @@ public class MyGeneratorEngine {
 				// add the model-dependent code to the generated file
 				generateModelCodeInTemplateApp();
 
+				displayNotification("Generation Succeed!");
+				
 				System.out.println("Code generated in: "
 						+ parentFolder.getAbsolutePath());
 
 			} catch (Exception e) {
 				System.out.println("Error during generation.");
 				e.printStackTrace();
+				displayNotification("Generation Failed!");
 			}
 		}
 	}
@@ -105,7 +116,7 @@ public class MyGeneratorEngine {
 				// Create the lines to add in declaration space
 				String name = getClassNameFromObject(n);
 				String line = name + " " + name.toLowerCase() + " = new "
-						+ name + "();";
+						+ name + "(this);";
 				decStringBuilder.append(line);
 				decStringBuilder.append('\n');
 
@@ -168,6 +179,36 @@ public class MyGeneratorEngine {
 		String[] splittedName = className.split("\\.");
 		String name = splittedName[splittedName.length - 1];
 		return name;
+	}
+	
+	// Show message in a JDialog with an OK button
+	private void displayNotification(final String message) {
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				final JDialog dialog = new JDialog();
+				JPanel messagePane = new JPanel();
+			    messagePane.add(new JLabel(message));
+			    dialog.getContentPane().add(messagePane);
+			    JPanel buttonPane = new JPanel();
+			    JButton button = new JButton("OK"); 
+			    buttonPane.add(button); 
+			    button.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						dialog.setVisible(false); 
+					    dialog.dispose(); 
+					}
+				});
+			    dialog.getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			    dialog.setDefaultCloseOperation(dialog.DISPOSE_ON_CLOSE);
+			    dialog.pack(); 
+			    dialog.setVisible(true);
+				
+			}
+		});
 	}
 
 } // End
