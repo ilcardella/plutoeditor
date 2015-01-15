@@ -42,18 +42,6 @@ public class WriteCustomCodeAction extends SelectionAction {
 		if (cmd == null)
 			return false;
 		return true;
-
-		// if (getSelectedObjects().isEmpty()) {
-		// return false;
-		// }
-		// if (getSelectedObjects().size() > 1) {
-		// return false;
-		// }
-		// Object obj = getSelectedObjects().get(0);
-		// if (!(obj instanceof MissionModifierEditPart)) {
-		// return false;
-		// }
-		// return true;
 	}
 
 	public Command createWriteCustomCodeCommand(String string) {
@@ -97,6 +85,8 @@ public class WriteCustomCodeAction extends SelectionAction {
 		public void actionPerformed(ActionEvent arg0) {
 			String code = frame.getTextFromTextArea();
 			finishRun(code);
+			frame.dispose();
+			frame.setVisible(false);
 		}
 	}
 	
