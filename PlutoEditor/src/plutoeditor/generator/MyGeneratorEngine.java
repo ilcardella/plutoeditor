@@ -10,11 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import plutoeditor.generator.utils.UnzipUtility;
 import plutoeditor.model.editor.*;
@@ -63,7 +60,7 @@ public class MyGeneratorEngine {
 				generateModelCodeInTemplateApp();
 
 				displayNotification("Generation Succeed!");
-				
+
 				System.out.println("Code generated in: "
 						+ parentFolder.getAbsolutePath());
 
@@ -106,15 +103,22 @@ public class MyGeneratorEngine {
 			// Initialize output stream
 			fileOutputStream = new FileOutputStream(modelFile);
 
-			// Filling the declaration tag in the template
+			// Filling the tags in the template
 			List<Node> children = diagram.getChildrenNodes();
 			StringBuilder decStringBuilder = new StringBuilder();
 			StringBuilder exeStringBuilder = new StringBuilder();
-			Node firstNode = children.get(0); // Usually the first node is the first in the list
+			Node firstNode = children.get(0); // Usually the first node is the
+												// first in the list
 
 			for (Node n : children) {
+
+				// If n is a MissionModifier create the class with custom code
+				if (n instanceof MissionModifier) {
+					generateMissionModifierClass((MissionModifier) n);
+				}
+
 				// Create the lines to add in declaration space
-				String name = getClassNameFromObject(n);
+				String name = getClassNameFromNode(n);
 				String line = name + " " + name.toLowerCase() + " = new "
 						+ name + "(this);";
 				decStringBuilder.append(line);
@@ -125,19 +129,23 @@ public class MyGeneratorEngine {
 				// for each outgoing connections
 				for (Connection c : srcConn) {
 					// These lines will register the observers of each block
-					exeStringBuilder.append(name.toLowerCase() + ".addObserver("
-							+ getClassNameFromObject(c.getTargetNode()).toLowerCase() + ");");
+					exeStringBuilder.append(name.toLowerCase()
+							+ ".addObserver("
+							+ getClassNameFromNode(c.getTargetNode())
+									.toLowerCase() + ");");
 					exeStringBuilder.append('\n');
 				}
-				
+
 				// looking for the first node
-				if(n.getTargetConnections() == null || n.getTargetConnections().size() == 0){
+				if (n.getTargetConnections() == null
+						|| n.getTargetConnections().size() == 0) {
 					firstNode = n;
 				}
 			}
 			// This line will launch the first block
-			exeStringBuilder.append(getClassNameFromObject(firstNode).toLowerCase()+".update(null, m);");
-			
+			exeStringBuilder.append(getClassNameFromNode(firstNode)
+					.toLowerCase() + ".update(null, m);");
+
 			// Write the lines to the fileAsString replacing the tags
 			fileAsString = fileAsString.replaceAll("\\<dec>",
 					decStringBuilder.toString());
@@ -173,41 +181,91 @@ public class MyGeneratorEngine {
 		}
 	}
 
+	private void generateMissionModifierClass(MissionModifier n) {
+		// Generate the class in the model package
+		FileOutputStream fileOutputStream = null;
+		String classString = n.getTemplateCode(); // String representation of
+													// the file
+		File classFile = new File(parentFolder.getAbsolutePath()
+				+ "/src/it/polimi/template/controller/block/" + n.getName()
+				+ ".java");
+		if (!classFile.exists()) {
+			classFile.getParentFile().mkdirs();
+			try {
+				classFile.createNewFile();
+			} catch (IOException e) {
+				System.out.println("MissionModifier class NOT created!");
+				e.printStackTrace();
+			}
+		}
+
+		// Replace <run> tag in classString with customcode
+		classString = classString.replaceAll("\\<run>", n.getCustomCode());
+		try {
+			// Write the classString in the file
+			fileOutputStream = new FileOutputStream(classFile);
+			byte[] classStringInBytes = classString.getBytes();
+			fileOutputStream.write(classStringInBytes);
+			
+		} catch (IOException e) {
+			System.out.println("MissionModifier customCode NOT inserted!");
+			e.printStackTrace();
+		} finally {
+			if (fileOutputStream != null) {
+				try {
+					fileOutputStream.flush();
+					fileOutputStream.close();
+				} catch (IOException e) {
+					System.out.println("Error closing the outputStream.");
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
 	// return the className of the parameter without the package as prefix
-	public String getClassNameFromObject(Object o) {
-		String className = o.getClass().getName();
-		String[] splittedName = className.split("\\.");
-		String name = splittedName[splittedName.length - 1];
+	public String getClassNameFromNode(Node n) {
+		String name = "null";
+		if (n instanceof MissionModifier) {
+			// The MissionModifier has the final class name as the name given by
+			// the user
+			name = ((MissionModifier) n).getName();
+		} else {
+			String className = n.getClass().getName();
+			String[] splittedName = className.split("\\.");
+			name = splittedName[splittedName.length - 1];
+		}
 		return name;
 	}
-	
+
 	// Show message in a JDialog with an OK button
 	private void displayNotification(final String message) {
 		SwingUtilities.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				final JDialog dialog = new JDialog();
 				JPanel messagePane = new JPanel();
-			    messagePane.add(new JLabel(message));
-			    dialog.getContentPane().add(messagePane);
-			    JPanel buttonPane = new JPanel();
-			    JButton button = new JButton("OK"); 
-			    buttonPane.add(button); 
-			    button.addActionListener(new ActionListener() {
-					
+				messagePane.add(new JLabel(message));
+				dialog.getContentPane().add(messagePane);
+				JPanel buttonPane = new JPanel();
+				JButton button = new JButton("OK");
+				buttonPane.add(button);
+				button.addActionListener(new ActionListener() {
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						dialog.setVisible(false); 
-					    dialog.dispose(); 
+						dialog.setVisible(false);
+						dialog.dispose();
 					}
 				});
-			    dialog.getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			    dialog.setDefaultCloseOperation(dialog.DISPOSE_ON_CLOSE);
-			    dialog.pack(); 
-			    dialog.setLocationRelativeTo(null);
-			    dialog.setVisible(true);
-				
+				dialog.getContentPane().add(buttonPane, BorderLayout.SOUTH);
+				dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+				dialog.pack();
+				dialog.setLocationRelativeTo(null);
+				dialog.setVisible(true);
+
 			}
 		});
 	}
