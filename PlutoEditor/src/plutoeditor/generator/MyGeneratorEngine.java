@@ -198,9 +198,13 @@ public class MyGeneratorEngine {
 				e.printStackTrace();
 			}
 		}
+		
+		// Replace <name> tag in classString with the name of the class
+		classString = classString.replaceAll("\\<name>", n.getName());
 
 		// Replace <run> tag in classString with customcode
 		classString = classString.replaceAll("\\<run>", n.getCustomCode());
+		
 		try {
 			// Write the classString in the file
 			fileOutputStream = new FileOutputStream(classFile);
