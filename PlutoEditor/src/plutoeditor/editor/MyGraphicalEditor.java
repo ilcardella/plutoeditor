@@ -107,11 +107,7 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		instGroup.add(new CombinedTemplateCreationEntry("Clock",
 				"Create a clock block", Clock.class, new NodeCreationFactory(
 						Clock.class), null, null));
-
-		instGroup.add(new CombinedTemplateCreationEntry("Timer Monitor",
-				"Create a condition block", TimerMonitor.class,
-				new NodeCreationFactory(TimerMonitor.class), null, null));
-
+		
 		instGroup.add(new CombinedTemplateCreationEntry("Drone Allocator",
 				"Create a drone allocator block", DroneAllocator.class,
 				new NodeCreationFactory(DroneAllocator.class), null, null));
@@ -119,18 +115,22 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		instGroup.add(new CombinedTemplateCreationEntry("Mission Creator",
 				"Create a mission creator block", MissionCreator.class,
 				new NodeCreationFactory(MissionCreator.class), null, null));
-
+		
 		instGroup.add(new CombinedTemplateCreationEntry("Mission Modifier",
 				"Create a mission modifier block", MissionModifier.class,
 				new NodeCreationFactory(MissionModifier.class), null, null));
-
+		
 		instGroup.add(new CombinedTemplateCreationEntry("Priority Manager",
 				"Create a priority manager block", PriorityManager.class,
 				new NodeCreationFactory(PriorityManager.class), null, null));
-
+		
 		instGroup.add(new CombinedTemplateCreationEntry("Trip Launcher",
 				"Create a trip launcher block", TripLauncher.class,
 				new NodeCreationFactory(TripLauncher.class), null, null));
+		
+		instGroup.add(new CombinedTemplateCreationEntry("Timer Monitor",
+				"Create a condition block", TimerMonitor.class,
+				new NodeCreationFactory(TimerMonitor.class), null, null));
 
 		instGroup.add(new CombinedTemplateCreationEntry("Trip Monitor",
 				"Create a trip monitor block", TripMonitor.class,
