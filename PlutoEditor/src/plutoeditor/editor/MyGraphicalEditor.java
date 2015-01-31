@@ -195,7 +195,8 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	protected void initializeGraphicalViewer() {
 
 		GraphicalViewer viewer = getGraphicalViewer();
-		model = createDefaultModel();
+		//model = createDefaultModel();
+		model = new Diagram();
 		viewer.setContents(model);
 		viewer.addDropTargetListener(new MyTemplateTransferDropTargetListener(
 				viewer));
