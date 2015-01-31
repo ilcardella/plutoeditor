@@ -35,7 +35,6 @@ public class MyEditorInput implements IEditorInput {
 
 	@Override
 	public IPersistableElement getPersistable() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -46,7 +45,6 @@ public class MyEditorInput implements IEditorInput {
 
 	@Override
 	public Object getAdapter(Class adapter) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -21,9 +21,6 @@ public class AppAbstractTreeEditPart extends AbstractTreeEditPart implements
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void propertyChange(PropertyChangeEvent arg0) {}
 
 }

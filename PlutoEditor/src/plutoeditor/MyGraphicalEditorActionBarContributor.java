@@ -29,10 +29,7 @@ public class MyGraphicalEditorActionBarContributor extends ActionBarContributor 
 	}
 
 	@Override
-	protected void declareGlobalActionKeys() {
-		// TODO Auto-generated method stub
-
-	}
+	protected void declareGlobalActionKeys() {}
 
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
 		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
@@ -44,8 +41,6 @@ public class MyGraphicalEditorActionBarContributor extends ActionBarContributor 
 		toolBarManager.add(new ZoomComboContributionItem(getPage()));
 	}
 
-	public void contributeToMenu(IMenuManager menuManager) {
-		// TODO
-	}
+	public void contributeToMenu(IMenuManager menuManager) {}
 
 }

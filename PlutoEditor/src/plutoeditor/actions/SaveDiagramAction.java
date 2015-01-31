@@ -18,7 +18,6 @@ public class SaveDiagramAction extends EditorPartAction {
 		setText("Save Diagram...");
 		setId(SAVE_DIAGRAM_ID);
 		setToolTipText("Save your diagram");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
