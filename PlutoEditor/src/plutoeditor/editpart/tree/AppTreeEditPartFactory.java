@@ -4,7 +4,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
 import plutoeditor.model.editor.Clock;
-import plutoeditor.model.editor.ConditionBlock;
+import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Diagram;
 import plutoeditor.model.editor.DroneAllocator;
 import plutoeditor.model.editor.MissionCreator;
@@ -29,8 +29,8 @@ public class AppTreeEditPartFactory implements EditPartFactory {
 		else if (model instanceof Clock) {
 			part = new ClockTreeEditPart();
 		}
-		else if (model instanceof ConditionBlock) {
-			part = new ConditionBlockTreeEditPart();
+		else if (model instanceof TimerMonitor) {
+			part = new TimerMonitorTreeEditPart();
 		}
 		else if (model instanceof DroneAllocator) {
 			part = new DroneAllocatorTreeEditPart();

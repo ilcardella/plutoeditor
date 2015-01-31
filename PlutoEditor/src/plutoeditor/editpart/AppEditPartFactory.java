@@ -22,8 +22,8 @@ public class AppEditPartFactory implements EditPartFactory {
 		else if (model instanceof Clock) {
 			part = new ClockEditPart();
 		}
-		else if (model instanceof ConditionBlock) {
-			part = new ConditionBlockEditPart();
+		else if (model instanceof TimerMonitor) {
+			part = new TimerMonitorEditPart();
 		}
 		else if (model instanceof DroneAllocator) {
 			part = new DroneAllocatorEditPart();

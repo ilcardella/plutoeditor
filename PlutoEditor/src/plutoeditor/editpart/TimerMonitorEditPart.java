@@ -4,7 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import plutoeditor.model.editor.ConditionBlock;
+import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Connection;
 import plutoeditor.model.editor.Node;
 
@@ -19,14 +19,14 @@ import org.eclipse.gef.ConnectionEditPart;
 import plutoeditor.editpolicies.AppDeletePolicy;
 import plutoeditor.editpolicies.AppEditLayoutPolicy;
 import plutoeditor.editpolicies.AppRenamePolicy;
-import plutoeditor.figure.ConditionBlockFigure;
+import plutoeditor.figure.TimerMonitorFigure;
 
-public class ConditionBlockEditPart extends AppAbstractEditPart implements
+public class TimerMonitorEditPart extends AppAbstractEditPart implements
 		NodeEditPart {
 
 	@Override
 	protected IFigure createFigure() {
-		IFigure figure = new ConditionBlockFigure();
+		IFigure figure = new TimerMonitorFigure();
 		return figure;
 	}
 
@@ -40,8 +40,8 @@ public class ConditionBlockEditPart extends AppAbstractEditPart implements
 	}
 
 	protected void refreshVisuals() {
-		ConditionBlockFigure figure = (ConditionBlockFigure) getFigure();
-		ConditionBlock model = (ConditionBlock) getModel();
+		TimerMonitorFigure figure = (TimerMonitorFigure) getFigure();
+		TimerMonitor model = (TimerMonitor) getModel();
 
 		figure.setName(model.getName());
 		figure.setLayout(model.getLayout());
@@ -64,11 +64,11 @@ public class ConditionBlockEditPart extends AppAbstractEditPart implements
 	}
 
 	public List<Connection> getModelSourceConnections() {
-		return ((ConditionBlock) getModel()).getSourceConnections();
+		return ((TimerMonitor) getModel()).getSourceConnections();
 	}
 
 	public List<Connection> getModelTargetConnections() {
-		return ((ConditionBlock) getModel()).getTargetConnections();
+		return ((TimerMonitor) getModel()).getTargetConnections();
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import org.eclipse.gef.requests.CreateRequest;
 
 import plutoeditor.commands.changelayout.AbstractLayoutCommand;
 import plutoeditor.commands.changelayout.ClockChangeLayoutCommand;
-import plutoeditor.commands.changelayout.ConditionBlockChangeLayoutCommand;
+import plutoeditor.commands.changelayout.TimerMonitorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.DroneAllocatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionCreatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionModifierChangeLayoutCommand;
@@ -17,7 +17,7 @@ import plutoeditor.commands.changelayout.TripLauncherChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TripMonitorChangeLayoutCommand;
 import plutoeditor.commands.create.NodeCreateCommand;
 import plutoeditor.editpart.ClockEditPart;
-import plutoeditor.editpart.ConditionBlockEditPart;
+import plutoeditor.editpart.TimerMonitorEditPart;
 import plutoeditor.editpart.DiagramEditPart;
 import plutoeditor.editpart.DroneAllocatorEditPart;
 import plutoeditor.editpart.MissionCreatorEditPart;
@@ -44,8 +44,8 @@ public class AppEditLayoutPolicy extends XYLayoutEditPolicy {
 			command = new DroneAllocatorChangeLayoutCommand();
 		} else if (child instanceof ClockEditPart) {
 			command = new ClockChangeLayoutCommand();
-		} else if (child instanceof ConditionBlockEditPart) {
-			command = new ConditionBlockChangeLayoutCommand();
+		} else if (child instanceof TimerMonitorEditPart) {
+			command = new TimerMonitorChangeLayoutCommand();
 		} else if (child instanceof MissionModifierEditPart) {
 			command = new MissionModifierChangeLayoutCommand();
 		} else if (child instanceof PriorityManagerEditPart) {

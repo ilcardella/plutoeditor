@@ -19,8 +19,8 @@ public class NodeCreateCommand extends Command {
 	public void setNode(Object c) {
 		if (c instanceof Clock)
 			this.node = (Clock) c;
-		else if (c instanceof ConditionBlock)
-			this.node = (ConditionBlock) c;
+		else if (c instanceof TimerMonitor)
+			this.node = (TimerMonitor) c;
 		else if (c instanceof DroneAllocator)
 			this.node = (DroneAllocator) c;
 		else if (c instanceof MissionCreator)

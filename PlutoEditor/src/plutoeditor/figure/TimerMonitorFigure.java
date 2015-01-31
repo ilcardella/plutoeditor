@@ -9,12 +9,12 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 
-public class ConditionBlockFigure extends Figure {
+public class TimerMonitorFigure extends Figure {
 	
 	private Label labelName = new Label();
 	private XYLayout layout;
 
-	public ConditionBlockFigure() {
+	public TimerMonitorFigure() {
 		layout = new XYLayout();
 		setLayoutManager(layout);
 

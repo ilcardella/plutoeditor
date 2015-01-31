@@ -4,7 +4,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.requests.CreationFactory;
 
 import plutoeditor.model.editor.Clock;
-import plutoeditor.model.editor.ConditionBlock;
+import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.DroneAllocator;
 import plutoeditor.model.editor.MissionCreator;
 import plutoeditor.model.editor.MissionModifier;
@@ -30,9 +30,9 @@ public class NodeCreationFactory implements CreationFactory {
 			clk.setLayout(new Rectangle(25, 40, 120, 40));
 			return clk;
 		}
-		else if (template == ConditionBlock.class){
-			ConditionBlock cdb = new ConditionBlock();
-			cdb.setName("Condition Block");
+		else if (template == TimerMonitor.class){
+			TimerMonitor cdb = new TimerMonitor();
+			cdb.setName("Timer Monitor");
 			cdb.setLayout(new Rectangle(25, 40, 120, 40));
 			return cdb;
 		}

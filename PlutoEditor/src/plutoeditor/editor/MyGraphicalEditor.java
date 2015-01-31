@@ -59,7 +59,7 @@ import plutoeditor.creationfactory.NodeCreationFactory;
 import plutoeditor.editpart.AppEditPartFactory;
 import plutoeditor.editpart.tree.AppTreeEditPartFactory;
 import plutoeditor.model.editor.Clock;
-import plutoeditor.model.editor.ConditionBlock;
+import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Connection;
 import plutoeditor.model.editor.Diagram;
 import plutoeditor.model.editor.DroneAllocator;
@@ -108,9 +108,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 				"Create a clock block", Clock.class, new NodeCreationFactory(
 						Clock.class), null, null));
 
-		instGroup.add(new CombinedTemplateCreationEntry("Condition Block",
-				"Create a condition block", ConditionBlock.class,
-				new NodeCreationFactory(ConditionBlock.class), null, null));
+		instGroup.add(new CombinedTemplateCreationEntry("Timer Monitor",
+				"Create a condition block", TimerMonitor.class,
+				new NodeCreationFactory(TimerMonitor.class), null, null));
 
 		instGroup.add(new CombinedTemplateCreationEntry("Drone Allocator",
 				"Create a drone allocator block", DroneAllocator.class,

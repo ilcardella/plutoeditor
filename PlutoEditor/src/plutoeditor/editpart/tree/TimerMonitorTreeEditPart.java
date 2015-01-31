@@ -9,12 +9,12 @@ import org.eclipse.ui.PlatformUI;
 
 import plutoeditor.editpolicies.AppDeletePolicy;
 import plutoeditor.editpolicies.AppRenamePolicy;
-import plutoeditor.model.editor.ConditionBlock;
+import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Node;
 
-public class ConditionBlockTreeEditPart extends AppAbstractTreeEditPart {
+public class TimerMonitorTreeEditPart extends AppAbstractTreeEditPart {
 	protected List<Node> getModelChildren() {
-		return ((ConditionBlock) getModel()).getChildrenNodes();
+		return ((TimerMonitor) getModel()).getChildrenNodes();
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class ConditionBlockTreeEditPart extends AppAbstractTreeEditPart {
 	}
 
 	public void refreshVisuals() {
-		ConditionBlock model = (ConditionBlock) getModel();
+		TimerMonitor model = (TimerMonitor) getModel();
 		setWidgetText(model.getName());
 		setWidgetImage(PlatformUI.getWorkbench().getSharedImages()
 				.getImage(ISharedImages.IMG_DEF_VIEW));
