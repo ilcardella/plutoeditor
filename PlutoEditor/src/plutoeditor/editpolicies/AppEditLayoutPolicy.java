@@ -7,7 +7,9 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 
 import plutoeditor.commands.changelayout.AbstractLayoutCommand;
+import plutoeditor.commands.changelayout.ActionEvaluatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.ClockChangeLayoutCommand;
+import plutoeditor.commands.changelayout.MissionRepeaterChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TimerMonitorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.DroneAllocatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionCreatorChangeLayoutCommand;
@@ -16,7 +18,9 @@ import plutoeditor.commands.changelayout.PriorirtyManagerChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TripLauncherChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TripMonitorChangeLayoutCommand;
 import plutoeditor.commands.create.NodeCreateCommand;
+import plutoeditor.editpart.ActionEvaluatorEditPart;
 import plutoeditor.editpart.ClockEditPart;
+import plutoeditor.editpart.MissionRepeaterEditPart;
 import plutoeditor.editpart.TimerMonitorEditPart;
 import plutoeditor.editpart.DiagramEditPart;
 import plutoeditor.editpart.DroneAllocatorEditPart;
@@ -54,6 +58,10 @@ public class AppEditLayoutPolicy extends XYLayoutEditPolicy {
 			command = new TripLauncherChangeLayoutCommand();
 		} else if (child instanceof TripMonitorEditPart) {
 			command = new TripMonitorChangeLayoutCommand();
+		} else if (child instanceof MissionRepeaterEditPart) {
+			command = new MissionRepeaterChangeLayoutCommand();
+		} else if (child instanceof ActionEvaluatorEditPart) {
+			command = new ActionEvaluatorChangeLayoutCommand();
 		}
 
 		command.setModel(child.getModel());

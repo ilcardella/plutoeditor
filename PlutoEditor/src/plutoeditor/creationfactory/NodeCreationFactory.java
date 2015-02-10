@@ -3,7 +3,9 @@ package plutoeditor.creationfactory;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.requests.CreationFactory;
 
+import plutoeditor.model.editor.ActionEvaluator;
 import plutoeditor.model.editor.Clock;
+import plutoeditor.model.editor.MissionRepeater;
 import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.DroneAllocator;
 import plutoeditor.model.editor.MissionCreator;
@@ -69,6 +71,18 @@ public class NodeCreationFactory implements CreationFactory {
 		else if (template == TripMonitor.class){
 			TripMonitor tm = new TripMonitor();
 			tm.setName("Trip Monitor");
+			tm.setLayout(new Rectangle(25, 40, 120, 40));
+			return tm;
+		}
+		else if (template == MissionRepeater.class){
+			MissionRepeater tm = new MissionRepeater();
+			tm.setName("Mission Repeater");
+			tm.setLayout(new Rectangle(25, 40, 120, 40));
+			return tm;
+		}
+		else if (template == ActionEvaluator.class){
+			ActionEvaluator tm = new ActionEvaluator();
+			tm.setName("Action Evaluator");
 			tm.setLayout(new Rectangle(25, 40, 120, 40));
 			return tm;
 		}

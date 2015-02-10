@@ -33,6 +33,10 @@ public class NodeCreateCommand extends Command {
 			this.node = (TripLauncher) c;
 		else if (c instanceof TripMonitor)
 			this.node = (TripMonitor) c;
+		else if (c instanceof MissionRepeater)
+			this.node = (MissionRepeater) c;
+		else if (c instanceof ActionEvaluator)
+			this.node = (ActionEvaluator) c;
 	}
 
 	public void setDiagram(Object e) {

@@ -58,7 +58,9 @@ import plutoeditor.contextmenu.AppContextMenuProvider;
 import plutoeditor.creationfactory.NodeCreationFactory;
 import plutoeditor.editpart.AppEditPartFactory;
 import plutoeditor.editpart.tree.AppTreeEditPartFactory;
+import plutoeditor.model.editor.ActionEvaluator;
 import plutoeditor.model.editor.Clock;
+import plutoeditor.model.editor.MissionRepeater;
 import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Connection;
 import plutoeditor.model.editor.Diagram;
@@ -104,6 +106,11 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		// PaletteGroup instGroup = new PaletteGroup("Creation");
 		PaletteDrawer instGroup = new PaletteDrawer("Blocks Elements");
 		root.add(instGroup);
+		
+		instGroup.add(new CombinedTemplateCreationEntry("Action Evaluator",
+				"Create an action evaluator block", ActionEvaluator.class,
+				new NodeCreationFactory(ActionEvaluator.class), null, null));
+		
 		instGroup.add(new CombinedTemplateCreationEntry("Clock",
 				"Create a clock block", Clock.class, new NodeCreationFactory(
 						Clock.class), null, null));
@@ -119,6 +126,10 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		instGroup.add(new CombinedTemplateCreationEntry("Mission Modifier",
 				"Create a mission modifier block", MissionModifier.class,
 				new NodeCreationFactory(MissionModifier.class), null, null));
+		
+		instGroup.add(new CombinedTemplateCreationEntry("Mission Repeater",
+				"Create a mission repeater block", MissionRepeater.class,
+				new NodeCreationFactory(MissionRepeater.class), null, null));
 		
 		instGroup.add(new CombinedTemplateCreationEntry("Priority Manager",
 				"Create a priority manager block", PriorityManager.class,
