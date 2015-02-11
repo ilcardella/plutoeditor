@@ -9,6 +9,7 @@ import org.eclipse.gef.requests.CreateRequest;
 import plutoeditor.commands.changelayout.AbstractLayoutCommand;
 import plutoeditor.commands.changelayout.ActionEvaluatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.ClockChangeLayoutCommand;
+import plutoeditor.commands.changelayout.GateFIFOChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionRepeaterChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TimerMonitorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.DroneAllocatorChangeLayoutCommand;
@@ -20,6 +21,7 @@ import plutoeditor.commands.changelayout.TripMonitorChangeLayoutCommand;
 import plutoeditor.commands.create.NodeCreateCommand;
 import plutoeditor.editpart.ActionEvaluatorEditPart;
 import plutoeditor.editpart.ClockEditPart;
+import plutoeditor.editpart.GateFIFOEditPart;
 import plutoeditor.editpart.MissionRepeaterEditPart;
 import plutoeditor.editpart.TimerMonitorEditPart;
 import plutoeditor.editpart.DiagramEditPart;
@@ -62,6 +64,8 @@ public class AppEditLayoutPolicy extends XYLayoutEditPolicy {
 			command = new MissionRepeaterChangeLayoutCommand();
 		} else if (child instanceof ActionEvaluatorEditPart) {
 			command = new ActionEvaluatorChangeLayoutCommand();
+		} else if (child instanceof GateFIFOEditPart) {
+			command = new GateFIFOChangeLayoutCommand();
 		}
 
 		command.setModel(child.getModel());

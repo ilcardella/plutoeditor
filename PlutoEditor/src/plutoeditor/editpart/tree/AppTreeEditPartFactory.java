@@ -5,6 +5,7 @@ import org.eclipse.gef.EditPartFactory;
 
 import plutoeditor.model.editor.ActionEvaluator;
 import plutoeditor.model.editor.Clock;
+import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
 import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Diagram;
@@ -44,6 +45,8 @@ public class AppTreeEditPartFactory implements EditPartFactory {
 			part = new MissionRepeaterTreeEditPart();
 		} else if (model instanceof ActionEvaluator) {
 			part = new ActionEvaluatorTreeEditPart();
+		} else if (model instanceof GateFIFO) {
+			part = new GateFIFOTreeEditPart();
 		}
 
 		if (part != null)

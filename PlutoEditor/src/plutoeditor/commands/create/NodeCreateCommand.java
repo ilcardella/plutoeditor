@@ -37,6 +37,8 @@ public class NodeCreateCommand extends Command {
 			this.node = (MissionRepeater) c;
 		else if (c instanceof ActionEvaluator)
 			this.node = (ActionEvaluator) c;
+		else if (c instanceof GateFIFO)
+			this.node = (GateFIFO) c;
 	}
 
 	public void setDiagram(Object e) {

@@ -60,6 +60,7 @@ import plutoeditor.editpart.AppEditPartFactory;
 import plutoeditor.editpart.tree.AppTreeEditPartFactory;
 import plutoeditor.model.editor.ActionEvaluator;
 import plutoeditor.model.editor.Clock;
+import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
 import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Connection;
@@ -118,6 +119,10 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		instGroup.add(new CombinedTemplateCreationEntry("Drone Allocator",
 				"Create a drone allocator block", DroneAllocator.class,
 				new NodeCreationFactory(DroneAllocator.class), null, null));
+		
+		instGroup.add(new CombinedTemplateCreationEntry("Gate FIFO",
+				"Create a gate of type FIFO block", GateFIFO.class,
+				new NodeCreationFactory(GateFIFO.class), null, null));
 
 		instGroup.add(new CombinedTemplateCreationEntry("Mission Creator",
 				"Create a mission creator block", MissionCreator.class,

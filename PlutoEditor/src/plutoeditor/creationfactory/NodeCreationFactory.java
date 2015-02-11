@@ -5,6 +5,7 @@ import org.eclipse.gef.requests.CreationFactory;
 
 import plutoeditor.model.editor.ActionEvaluator;
 import plutoeditor.model.editor.Clock;
+import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
 import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.DroneAllocator;
@@ -83,6 +84,12 @@ public class NodeCreationFactory implements CreationFactory {
 		else if (template == ActionEvaluator.class){
 			ActionEvaluator tm = new ActionEvaluator();
 			tm.setName("Action Evaluator");
+			tm.setLayout(new Rectangle(25, 40, 120, 40));
+			return tm;
+		}
+		else if (template == GateFIFO.class){
+			GateFIFO tm = new GateFIFO();
+			tm.setName("Gate FIFO");
 			tm.setLayout(new Rectangle(25, 40, 120, 40));
 			return tm;
 		}
