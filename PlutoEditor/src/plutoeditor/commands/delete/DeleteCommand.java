@@ -10,7 +10,8 @@ public class DeleteCommand extends Command {
 	private Node parentModel;
 
 	public void execute() {
-		this.parentModel.removeChild(model);
+		if(model!=null && parentModel!=null)
+			this.parentModel.removeChild(model);
 	}
 
 	public void setModel(Object model) {
