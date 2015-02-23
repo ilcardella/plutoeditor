@@ -2,11 +2,11 @@ package plutoeditor.commands.changelayout;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import plutoeditor.model.editor.ActionEvaluator;
+import plutoeditor.model.editor.MissionEvaluator;
 
-public class ActionEvaluatorChangeLayoutCommand extends AbstractLayoutCommand {
+public class MissionEvaluatorChangeLayoutCommand extends AbstractLayoutCommand {
 
-	private ActionEvaluator model;
+	private MissionEvaluator model;
 	private Rectangle layout;
 	private Rectangle oldLayout;
 
@@ -19,8 +19,8 @@ public class ActionEvaluatorChangeLayoutCommand extends AbstractLayoutCommand {
 	}
 
 	public void setModel(Object model) {
-		this.model = (ActionEvaluator) model;
-		this.oldLayout = ((ActionEvaluator) model).getLayout();
+		this.model = (MissionEvaluator) model;
+		this.oldLayout = ((MissionEvaluator) model).getLayout();
 	}
 	
 	public void undo() {

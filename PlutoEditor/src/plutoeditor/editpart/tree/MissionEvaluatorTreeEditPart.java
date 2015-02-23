@@ -9,12 +9,12 @@ import org.eclipse.ui.PlatformUI;
 
 import plutoeditor.editpolicies.AppDeletePolicy;
 import plutoeditor.editpolicies.AppRenamePolicy;
-import plutoeditor.model.editor.ActionEvaluator;
+import plutoeditor.model.editor.MissionEvaluator;
 import plutoeditor.model.editor.Node;
 
-public class ActionEvaluatorTreeEditPart extends AppAbstractTreeEditPart {
+public class MissionEvaluatorTreeEditPart extends AppAbstractTreeEditPart {
 	protected List<Node> getModelChildren() {
-		return ((ActionEvaluator) getModel()).getChildrenNodes();
+		return ((MissionEvaluator) getModel()).getChildrenNodes();
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class ActionEvaluatorTreeEditPart extends AppAbstractTreeEditPart {
 	}
 
 	public void refreshVisuals() {
-		ActionEvaluator model = (ActionEvaluator) getModel();
+		MissionEvaluator model = (MissionEvaluator) getModel();
 		setWidgetText(model.getName());
 		setWidgetImage(PlatformUI.getWorkbench().getSharedImages()
 				.getImage(ISharedImages.IMG_DEF_VIEW));

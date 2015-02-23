@@ -32,8 +32,8 @@ public class AppEditPartFactory implements EditPartFactory {
 			part = new TripMonitorEditPart();
 		} else if (model instanceof Connection) {
 			part = new ConnectionEditPart();
-		} else if (model instanceof ActionEvaluator) {
-			part = new ActionEvaluatorEditPart();
+		} else if (model instanceof MissionEvaluator) {
+			part = new MissionEvaluatorEditPart();
 		} else if (model instanceof MissionRepeater) {
 			part = new MissionRepeaterEditPart();
 		} else if (model instanceof GateFIFO) {

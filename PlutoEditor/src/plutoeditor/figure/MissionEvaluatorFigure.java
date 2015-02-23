@@ -9,11 +9,11 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 
-public class ActionEvaluatorFigure extends Figure {
+public class MissionEvaluatorFigure extends Figure {
 	private Label labelName = new Label();
 	private XYLayout layout;
 	
-	public ActionEvaluatorFigure() {
+	public MissionEvaluatorFigure() {
 		layout = new XYLayout();
 		setLayoutManager(layout);
 		

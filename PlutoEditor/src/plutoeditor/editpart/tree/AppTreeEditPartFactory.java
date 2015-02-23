@@ -3,7 +3,7 @@ package plutoeditor.editpart.tree;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
-import plutoeditor.model.editor.ActionEvaluator;
+import plutoeditor.model.editor.MissionEvaluator;
 import plutoeditor.model.editor.Clock;
 import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
@@ -43,8 +43,8 @@ public class AppTreeEditPartFactory implements EditPartFactory {
 			part = new TripMonitorTreeEditPart();
 		} else if (model instanceof MissionRepeater) {
 			part = new MissionRepeaterTreeEditPart();
-		} else if (model instanceof ActionEvaluator) {
-			part = new ActionEvaluatorTreeEditPart();
+		} else if (model instanceof MissionEvaluator) {
+			part = new MissionEvaluatorTreeEditPart();
 		} else if (model instanceof GateFIFO) {
 			part = new GateFIFOTreeEditPart();
 		}

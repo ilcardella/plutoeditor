@@ -58,7 +58,7 @@ import plutoeditor.contextmenu.AppContextMenuProvider;
 import plutoeditor.creationfactory.NodeCreationFactory;
 import plutoeditor.editpart.AppEditPartFactory;
 import plutoeditor.editpart.tree.AppTreeEditPartFactory;
-import plutoeditor.model.editor.ActionEvaluator;
+import plutoeditor.model.editor.MissionEvaluator;
 import plutoeditor.model.editor.Clock;
 import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
@@ -108,9 +108,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		PaletteDrawer instGroup = new PaletteDrawer("Blocks Elements");
 		root.add(instGroup);
 		
-		instGroup.add(new CombinedTemplateCreationEntry("Action Evaluator",
-				"Create an action evaluator block", ActionEvaluator.class,
-				new NodeCreationFactory(ActionEvaluator.class), null, null));
+		instGroup.add(new CombinedTemplateCreationEntry("Mission Evaluator",
+				"Create a mission evaluator block", MissionEvaluator.class,
+				new NodeCreationFactory(MissionEvaluator.class), null, null));
 		
 		instGroup.add(new CombinedTemplateCreationEntry("Clock",
 				"Create a clock block", Clock.class, new NodeCreationFactory(

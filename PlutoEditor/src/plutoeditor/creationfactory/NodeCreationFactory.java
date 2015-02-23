@@ -3,7 +3,7 @@ package plutoeditor.creationfactory;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.requests.CreationFactory;
 
-import plutoeditor.model.editor.ActionEvaluator;
+import plutoeditor.model.editor.MissionEvaluator;
 import plutoeditor.model.editor.Clock;
 import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
@@ -81,9 +81,9 @@ public class NodeCreationFactory implements CreationFactory {
 			tm.setLayout(new Rectangle(25, 40, 120, 40));
 			return tm;
 		}
-		else if (template == ActionEvaluator.class){
-			ActionEvaluator tm = new ActionEvaluator();
-			tm.setName("Action Evaluator");
+		else if (template == MissionEvaluator.class){
+			MissionEvaluator tm = new MissionEvaluator();
+			tm.setName("Mission Evaluator");
 			tm.setLayout(new Rectangle(25, 40, 120, 40));
 			return tm;
 		}

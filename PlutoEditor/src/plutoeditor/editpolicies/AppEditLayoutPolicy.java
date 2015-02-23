@@ -7,7 +7,7 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 
 import plutoeditor.commands.changelayout.AbstractLayoutCommand;
-import plutoeditor.commands.changelayout.ActionEvaluatorChangeLayoutCommand;
+import plutoeditor.commands.changelayout.MissionEvaluatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.ClockChangeLayoutCommand;
 import plutoeditor.commands.changelayout.GateFIFOChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionRepeaterChangeLayoutCommand;
@@ -19,7 +19,7 @@ import plutoeditor.commands.changelayout.PriorirtyManagerChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TripLauncherChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TripMonitorChangeLayoutCommand;
 import plutoeditor.commands.create.NodeCreateCommand;
-import plutoeditor.editpart.ActionEvaluatorEditPart;
+import plutoeditor.editpart.MissionEvaluatorEditPart;
 import plutoeditor.editpart.ClockEditPart;
 import plutoeditor.editpart.GateFIFOEditPart;
 import plutoeditor.editpart.MissionRepeaterEditPart;
@@ -62,8 +62,8 @@ public class AppEditLayoutPolicy extends XYLayoutEditPolicy {
 			command = new TripMonitorChangeLayoutCommand();
 		} else if (child instanceof MissionRepeaterEditPart) {
 			command = new MissionRepeaterChangeLayoutCommand();
-		} else if (child instanceof ActionEvaluatorEditPart) {
-			command = new ActionEvaluatorChangeLayoutCommand();
+		} else if (child instanceof MissionEvaluatorEditPart) {
+			command = new MissionEvaluatorChangeLayoutCommand();
 		} else if (child instanceof GateFIFOEditPart) {
 			command = new GateFIFOChangeLayoutCommand();
 		}

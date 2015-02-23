@@ -35,8 +35,8 @@ public class NodeCreateCommand extends Command {
 			this.node = (TripMonitor) c;
 		else if (c instanceof MissionRepeater)
 			this.node = (MissionRepeater) c;
-		else if (c instanceof ActionEvaluator)
-			this.node = (ActionEvaluator) c;
+		else if (c instanceof MissionEvaluator)
+			this.node = (MissionEvaluator) c;
 		else if (c instanceof GateFIFO)
 			this.node = (GateFIFO) c;
 	}

@@ -15,17 +15,17 @@ import org.eclipse.gef.Request;
 import plutoeditor.editpolicies.AppDeletePolicy;
 import plutoeditor.editpolicies.AppEditLayoutPolicy;
 import plutoeditor.editpolicies.AppRenamePolicy;
-import plutoeditor.figure.ActionEvaluatorFigure;
-import plutoeditor.model.editor.ActionEvaluator;
+import plutoeditor.figure.MissionEvaluatorFigure;
+import plutoeditor.model.editor.MissionEvaluator;
 import plutoeditor.model.editor.Connection;
 import plutoeditor.model.editor.Node;
 
-public class ActionEvaluatorEditPart extends AppAbstractEditPart implements
+public class MissionEvaluatorEditPart extends AppAbstractEditPart implements
 		NodeEditPart {
 
 	@Override
 	protected IFigure createFigure() {
-		IFigure figure = new ActionEvaluatorFigure();
+		IFigure figure = new MissionEvaluatorFigure();
 		return figure;
 	}
 
@@ -39,8 +39,8 @@ public class ActionEvaluatorEditPart extends AppAbstractEditPart implements
 	}
 
 	protected void refreshVisuals() {
-		ActionEvaluatorFigure figure = (ActionEvaluatorFigure) getFigure();
-		ActionEvaluator model = (ActionEvaluator) getModel();
+		MissionEvaluatorFigure figure = (MissionEvaluatorFigure) getFigure();
+		MissionEvaluator model = (MissionEvaluator) getModel();
 
 		figure.setName(model.getName());
 		figure.setLayout(model.getLayout());
@@ -63,11 +63,11 @@ public class ActionEvaluatorEditPart extends AppAbstractEditPart implements
 	}
 
 	public List<Connection> getModelSourceConnections() {
-		return ((ActionEvaluator) getModel()).getSourceConnections();
+		return ((MissionEvaluator) getModel()).getSourceConnections();
 	}
 
 	public List<Connection> getModelTargetConnections() {
-		return ((ActionEvaluator) getModel()).getTargetConnections();
+		return ((MissionEvaluator) getModel()).getTargetConnections();
 	}
 
 	@Override
