@@ -119,9 +119,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 				"Create a drone allocator block", DroneAllocator.class,
 				new NodeCreationFactory(DroneAllocator.class), null, null));
 		
-		instGroup.add(new CombinedTemplateCreationEntry("End Block",
-				"Create an ending block", EndBlock.class,
-				new NodeCreationFactory(EndBlock.class), null, null));
+//		instGroup.add(new CombinedTemplateCreationEntry("End Block",
+//				"Create an ending block", EndBlock.class,
+//				new NodeCreationFactory(EndBlock.class), null, null));
 		
 		instGroup.add(new CombinedTemplateCreationEntry("Gate FIFO",
 				"Create a gate of type FIFO", GateFIFO.class,
@@ -151,9 +151,9 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 				"Create a priority manager block", PriorityManager.class,
 				new NodeCreationFactory(PriorityManager.class), null, null));
 		
-		instGroup.add(new CombinedTemplateCreationEntry("Start Block",
-				"Create a starting block", StartBlock.class,
-				new NodeCreationFactory(StartBlock.class), null, null));
+//		instGroup.add(new CombinedTemplateCreationEntry("Start Block",
+//				"Create a starting block", StartBlock.class,
+//				new NodeCreationFactory(StartBlock.class), null, null));
 		
 		instGroup.add(new CombinedTemplateCreationEntry("Trip Launcher",
 				"Create a trip launcher block", TripLauncher.class,
@@ -226,55 +226,73 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	protected void initializeGraphicalViewer() {
 
 		GraphicalViewer viewer = getGraphicalViewer();
-		//model = createDefaultModel();
-		model = new Diagram();
+		model = createDefaultModel();
+		//model = new Diagram();
 		viewer.setContents(model);
 		viewer.addDropTargetListener(new MyTemplateTransferDropTargetListener(
 				viewer));
 	}
-	
+
 	private Diagram createDefaultModel(){
 		Diagram model = new Diagram();
 		
-		MissionCreator mc = new MissionCreator();
-		mc.setName("Mission Creator");
-		mc.setLayout(new Rectangle(25, 40, 120, 40));
+		StartBlock sb = new StartBlock();
+		sb.setName("Start");
+		sb.setLayout(new Rectangle(25, 40, 120, 40));
 		
-		DroneAllocator da = new DroneAllocator();
-		da.setName("Drone Allocator");
-		da.setLayout(new Rectangle(220, 40, 120, 40));
+		EndBlock eb = new EndBlock();
+		sb.setName("End");
+		sb.setLayout(new Rectangle(400, 400, 120, 40));
 		
-		TripLauncher tl = new TripLauncher();
-		tl.setName("Trip Launcher");
-		tl.setLayout(new Rectangle(415, 40, 120, 40));
-		
-		TripMonitor tm = new TripMonitor();
-		tm.setName("Trip Monitor");
-		tm.setLayout(new Rectangle(415, 155, 120, 40));
-		
-		Connection conn = new Connection(mc, da);
-		mc.getSourceConnections().add(conn);
-		da.getTargetConnections().add(conn);
-		
-		conn = new Connection(da, tl);
-		da.getSourceConnections().add(conn);
-		tl.getTargetConnections().add(conn);
-		
-		conn = new Connection(tl, tm);
-		tl.getSourceConnections().add(conn);
-		tm.getTargetConnections().add(conn);
-		
-		conn = new Connection(tm, da);
-		tm.getSourceConnections().add(conn);
-		da.getTargetConnections().add(conn);
-		
-		model.getChildrenNodes().add(mc);
-		model.getChildrenNodes().add(da);
-		model.getChildrenNodes().add(tl);
-		model.getChildrenNodes().add(tm);
+		model.getChildrenNodes().add(sb);
+		model.getChildrenNodes().add(eb);
 		
 		return model;
 	}
+	
+// 	This version create a basic diagram
+//	private Diagram createDefaultModel(){
+//		Diagram model = new Diagram();
+//		
+//		MissionCreator mc = new MissionCreator();
+//		mc.setName("Mission Creator");
+//		mc.setLayout(new Rectangle(25, 40, 120, 40));
+//		
+//		DroneAllocator da = new DroneAllocator();
+//		da.setName("Drone Allocator");
+//		da.setLayout(new Rectangle(220, 40, 120, 40));
+//		
+//		TripLauncher tl = new TripLauncher();
+//		tl.setName("Trip Launcher");
+//		tl.setLayout(new Rectangle(415, 40, 120, 40));
+//		
+//		TripMonitor tm = new TripMonitor();
+//		tm.setName("Trip Monitor");
+//		tm.setLayout(new Rectangle(415, 155, 120, 40));
+//		
+//		Connection conn = new Connection(mc, da);
+//		mc.getSourceConnections().add(conn);
+//		da.getTargetConnections().add(conn);
+//		
+//		conn = new Connection(da, tl);
+//		da.getSourceConnections().add(conn);
+//		tl.getTargetConnections().add(conn);
+//		
+//		conn = new Connection(tl, tm);
+//		tl.getSourceConnections().add(conn);
+//		tm.getTargetConnections().add(conn);
+//		
+//		conn = new Connection(tm, da);
+//		tm.getSourceConnections().add(conn);
+//		da.getTargetConnections().add(conn);
+//		
+//		model.getChildrenNodes().add(mc);
+//		model.getChildrenNodes().add(da);
+//		model.getChildrenNodes().add(tl);
+//		model.getChildrenNodes().add(tm);
+//		
+//		return model;
+//	}
 
 	@Override
 	protected void initializePaletteViewer() {
