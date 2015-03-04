@@ -236,16 +236,16 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 	private Diagram createDefaultModel(){
 		Diagram model = new Diagram();
 		
-		StartBlock sb = new StartBlock();
-		sb.setName("Start");
-		sb.setLayout(new Rectangle(25, 40, 120, 40));
+		StartBlock start = new StartBlock();
+		start.setName("Start");
+		start.setLayout(new Rectangle(25, 40, 120, 40));
 		
-		EndBlock eb = new EndBlock();
-		sb.setName("End");
-		sb.setLayout(new Rectangle(400, 400, 120, 40));
+		EndBlock end = new EndBlock();
+		end.setName("End");
+		end.setLayout(new Rectangle(400, 400, 120, 40));
 		
-		model.getChildrenNodes().add(sb);
-		model.getChildrenNodes().add(eb);
+		model.getChildrenNodes().add(start);
+		model.getChildrenNodes().add(end);
 		
 		return model;
 	}
