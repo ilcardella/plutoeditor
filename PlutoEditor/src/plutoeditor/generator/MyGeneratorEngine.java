@@ -107,11 +107,11 @@ public class MyGeneratorEngine {
 			List<Node> children = diagram.getChildrenNodes();
 			StringBuilder decStringBuilder = new StringBuilder();
 			StringBuilder exeStringBuilder = new StringBuilder();
+			// TODO cambiare, ora il primo nodo è quello che ha in ingresso il blocco start
 			Node firstNode = children.get(0); // Usually the first node is the
 												// first in the list
 
 			for (Node n : children) {
-
 				// If n is a MissionModifier create the class with custom code
 				if (n instanceof MissionModifier) {
 					generateMissionModifierClass((MissionModifier) n);
@@ -136,6 +136,7 @@ public class MyGeneratorEngine {
 					exeStringBuilder.append('\n');
 				}
 
+				// TODO questo if, dopo aver fatto il todo sopra, non serve più
 				// looking for the first node
 				if (n.getTargetConnections() == null
 						|| n.getTargetConnections().size() == 0) {
@@ -146,7 +147,7 @@ public class MyGeneratorEngine {
 			exeStringBuilder.append(getClassNameFromNode(firstNode)
 					.toLowerCase() + ".update(null, m);");
 
-			// Write the lines to the fileAsString replacing the tags
+			// Now we write the built strings in the destination file
 			fileAsString = fileAsString.replaceAll("\\<dec>",
 					decStringBuilder.toString());
 			fileAsString = fileAsString.replaceAll("\\<exe>",
