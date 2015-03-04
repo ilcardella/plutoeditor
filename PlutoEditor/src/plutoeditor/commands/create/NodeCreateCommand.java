@@ -39,6 +39,12 @@ public class NodeCreateCommand extends Command {
 			this.node = (MissionEvaluator) c;
 		else if (c instanceof GateFIFO)
 			this.node = (GateFIFO) c;
+		else if (c instanceof GateFunnel)
+			this.node = (GateFunnel) c;
+		else if (c instanceof StartBlock)
+			this.node = (StartBlock) c;
+		else if (c instanceof EndBlock)
+			this.node = (EndBlock) c;
 	}
 
 	public void setDiagram(Object e) {
