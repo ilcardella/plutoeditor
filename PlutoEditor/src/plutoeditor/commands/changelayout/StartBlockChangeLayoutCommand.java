@@ -2,11 +2,11 @@ package plutoeditor.commands.changelayout;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import plutoeditor.model.editor.EndBlock;
+import plutoeditor.model.editor.StartBlock;
 
-public class EndChangeLayoutCommand extends AbstractLayoutCommand {
+public class StartBlockChangeLayoutCommand extends AbstractLayoutCommand {
 
-	private EndBlock model;
+	private StartBlock model;
 	private Rectangle layout;
 	private Rectangle oldLayout;
 
@@ -19,8 +19,8 @@ public class EndChangeLayoutCommand extends AbstractLayoutCommand {
 	}
 
 	public void setModel(Object model) {
-		this.model = (EndBlock) model;
-		this.oldLayout = ((EndBlock) model).getLayout();
+		this.model = (StartBlock) model;
+		this.oldLayout = ((StartBlock) model).getLayout();
 	}
 
 	public void undo() {

@@ -7,10 +7,13 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 
 import plutoeditor.commands.changelayout.AbstractLayoutCommand;
+import plutoeditor.commands.changelayout.EndBlockChangeLayoutCommand;
+import plutoeditor.commands.changelayout.GateFunnelChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionEvaluatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.ClockChangeLayoutCommand;
 import plutoeditor.commands.changelayout.GateFIFOChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionRepeaterChangeLayoutCommand;
+import plutoeditor.commands.changelayout.StartBlockChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TimerMonitorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.DroneAllocatorChangeLayoutCommand;
 import plutoeditor.commands.changelayout.MissionCreatorChangeLayoutCommand;
@@ -19,10 +22,13 @@ import plutoeditor.commands.changelayout.PriorirtyManagerChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TripLauncherChangeLayoutCommand;
 import plutoeditor.commands.changelayout.TripMonitorChangeLayoutCommand;
 import plutoeditor.commands.create.NodeCreateCommand;
+import plutoeditor.editpart.EndBlockEditPart;
+import plutoeditor.editpart.GateFunnelEditPart;
 import plutoeditor.editpart.MissionEvaluatorEditPart;
 import plutoeditor.editpart.ClockEditPart;
 import plutoeditor.editpart.GateFIFOEditPart;
 import plutoeditor.editpart.MissionRepeaterEditPart;
+import plutoeditor.editpart.StartBlockEditPart;
 import plutoeditor.editpart.TimerMonitorEditPart;
 import plutoeditor.editpart.DiagramEditPart;
 import plutoeditor.editpart.DroneAllocatorEditPart;
@@ -66,6 +72,12 @@ public class AppEditLayoutPolicy extends XYLayoutEditPolicy {
 			command = new MissionEvaluatorChangeLayoutCommand();
 		} else if (child instanceof GateFIFOEditPart) {
 			command = new GateFIFOChangeLayoutCommand();
+		} else if (child instanceof GateFunnelEditPart) {
+			command = new GateFunnelChangeLayoutCommand();
+		} else if (child instanceof StartBlockEditPart) {
+			command = new StartBlockChangeLayoutCommand();
+		} else if (child instanceof EndBlockEditPart) {
+			command = new EndBlockChangeLayoutCommand();
 		}
 
 		command.setModel(child.getModel());

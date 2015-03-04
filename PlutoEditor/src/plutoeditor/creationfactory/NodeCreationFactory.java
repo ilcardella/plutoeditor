@@ -3,10 +3,13 @@ package plutoeditor.creationfactory;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.requests.CreationFactory;
 
+import plutoeditor.model.editor.EndBlock;
+import plutoeditor.model.editor.GateFunnel;
 import plutoeditor.model.editor.MissionEvaluator;
 import plutoeditor.model.editor.Clock;
 import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
+import plutoeditor.model.editor.StartBlock;
 import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.DroneAllocator;
 import plutoeditor.model.editor.MissionCreator;
@@ -90,6 +93,24 @@ public class NodeCreationFactory implements CreationFactory {
 		else if (template == GateFIFO.class){
 			GateFIFO tm = new GateFIFO();
 			tm.setName("Gate FIFO");
+			tm.setLayout(new Rectangle(25, 40, 120, 40));
+			return tm;
+		}
+		else if (template == GateFunnel.class){
+			GateFunnel tm = new GateFunnel();
+			tm.setName("Gate Funnel");
+			tm.setLayout(new Rectangle(25, 40, 120, 40));
+			return tm;
+		}
+		else if (template == EndBlock.class){
+			EndBlock tm = new EndBlock();
+			tm.setName("End");
+			tm.setLayout(new Rectangle(25, 40, 120, 40));
+			return tm;
+		}
+		else if (template == StartBlock.class){
+			StartBlock tm = new StartBlock();
+			tm.setName("Start");
 			tm.setLayout(new Rectangle(25, 40, 120, 40));
 			return tm;
 		}

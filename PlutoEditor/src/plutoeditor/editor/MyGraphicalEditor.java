@@ -58,10 +58,13 @@ import plutoeditor.contextmenu.AppContextMenuProvider;
 import plutoeditor.creationfactory.NodeCreationFactory;
 import plutoeditor.editpart.AppEditPartFactory;
 import plutoeditor.editpart.tree.AppTreeEditPartFactory;
+import plutoeditor.model.editor.EndBlock;
+import plutoeditor.model.editor.GateFunnel;
 import plutoeditor.model.editor.MissionEvaluator;
 import plutoeditor.model.editor.Clock;
 import plutoeditor.model.editor.GateFIFO;
 import plutoeditor.model.editor.MissionRepeater;
+import plutoeditor.model.editor.StartBlock;
 import plutoeditor.model.editor.TimerMonitor;
 import plutoeditor.model.editor.Connection;
 import plutoeditor.model.editor.Diagram;
@@ -108,10 +111,6 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		PaletteDrawer instGroup = new PaletteDrawer("Blocks Elements");
 		root.add(instGroup);
 		
-		instGroup.add(new CombinedTemplateCreationEntry("Mission Evaluator",
-				"Create a mission evaluator block", MissionEvaluator.class,
-				new NodeCreationFactory(MissionEvaluator.class), null, null));
-		
 		instGroup.add(new CombinedTemplateCreationEntry("Clock",
 				"Create a clock block", Clock.class, new NodeCreationFactory(
 						Clock.class), null, null));
@@ -120,13 +119,25 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 				"Create a drone allocator block", DroneAllocator.class,
 				new NodeCreationFactory(DroneAllocator.class), null, null));
 		
+		instGroup.add(new CombinedTemplateCreationEntry("End Block",
+				"Create an ending block", EndBlock.class,
+				new NodeCreationFactory(EndBlock.class), null, null));
+		
 		instGroup.add(new CombinedTemplateCreationEntry("Gate FIFO",
-				"Create a gate of type FIFO block", GateFIFO.class,
+				"Create a gate of type FIFO", GateFIFO.class,
 				new NodeCreationFactory(GateFIFO.class), null, null));
+		
+		instGroup.add(new CombinedTemplateCreationEntry("Gate Funnel",
+				"Create a gate of type Funnel", GateFunnel.class,
+				new NodeCreationFactory(GateFunnel.class), null, null));
 
 		instGroup.add(new CombinedTemplateCreationEntry("Mission Creator",
 				"Create a mission creator block", MissionCreator.class,
 				new NodeCreationFactory(MissionCreator.class), null, null));
+		
+		instGroup.add(new CombinedTemplateCreationEntry("Mission Evaluator",
+				"Create a mission evaluator block", MissionEvaluator.class,
+				new NodeCreationFactory(MissionEvaluator.class), null, null));
 		
 		instGroup.add(new CombinedTemplateCreationEntry("Mission Modifier",
 				"Create a mission modifier block", MissionModifier.class,
@@ -139,6 +150,10 @@ public class MyGraphicalEditor extends GraphicalEditorWithPalette {
 		instGroup.add(new CombinedTemplateCreationEntry("Priority Manager",
 				"Create a priority manager block", PriorityManager.class,
 				new NodeCreationFactory(PriorityManager.class), null, null));
+		
+		instGroup.add(new CombinedTemplateCreationEntry("Start Block",
+				"Create a starting block", StartBlock.class,
+				new NodeCreationFactory(StartBlock.class), null, null));
 		
 		instGroup.add(new CombinedTemplateCreationEntry("Trip Launcher",
 				"Create a trip launcher block", TripLauncher.class,

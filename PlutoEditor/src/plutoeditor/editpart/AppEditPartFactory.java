@@ -38,6 +38,12 @@ public class AppEditPartFactory implements EditPartFactory {
 			part = new MissionRepeaterEditPart();
 		} else if (model instanceof GateFIFO) {
 			part = new GateFIFOEditPart();
+		} else if (model instanceof GateFunnel) {
+			part = new GateFunnelEditPart();
+		} else if (model instanceof StartBlock) {
+			part = new StartBlockEditPart();
+		} else if (model instanceof EndBlock) {
+			part = new EndBlockEditPart();
 		}
 
 		part.setModel(model);

@@ -9,15 +9,15 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 
-public class StartFigure extends Figure {
+public class EndBlockFigure extends Figure {
 
 	private Label labelName = new Label();
 	private XYLayout layout;
 
-	public StartFigure() {
+	public EndBlockFigure() {
 		layout = new XYLayout();
 		setLayoutManager(layout);
-		
+
 		labelName.setForegroundColor(ColorConstants.black);
 		add(labelName, ToolbarLayout.ALIGN_CENTER);
 		setConstraint(labelName, new Rectangle(5, 17, -1, -1));
