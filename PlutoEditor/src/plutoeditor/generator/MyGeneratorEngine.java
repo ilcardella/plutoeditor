@@ -56,8 +56,8 @@ public class MyGeneratorEngine {
 						.getInputStream();
 				unzipper.unzip(inputStream, parentFolder.getCanonicalPath());
 
-				// add the model-dependent code to the generated file
-				generateModelCodeInTemplateApp();
+				// add the model-dependent code to the generated app
+				generateModelBasedCode();
 
 				displayNotification("Generation Succeed!");
 
@@ -74,7 +74,7 @@ public class MyGeneratorEngine {
 
 	// This method looks for the tags in the fileToSave object and change them
 	// with the code generated from the model diagram
-	private void generateModelCodeInTemplateApp() {
+	private void generateModelBasedCode() {
 
 		File modelFile = new File(
 				parentFolder.getAbsolutePath()
@@ -100,6 +100,18 @@ public class MyGeneratorEngine {
 			}
 			if (n instanceof GateFunnel) {
 				generateGatesModelCode((GateFunnel) n);
+			}
+			if (n instanceof PriorityManager) {
+				enableConditinalFeature("PRIORITY_MANAGER");
+			}
+			if (n instanceof MissionRepeater) {
+				enableConditinalFeature("MISSION_REPEATER");
+			}
+			if (n instanceof Clock) {
+				enableConditinalFeature("CLOCK");
+			}
+			if (n instanceof TimerMonitor) {
+				enableConditinalFeature("TIMER_MONITOR");
 			}
 
 			// Create the lines to add in declaration space
@@ -239,6 +251,41 @@ public class MyGeneratorEngine {
 
 	}
 
+	private void enableConditinalFeature(String feature) {
+		
+		File f = null;
+		String tag = null;
+		
+		switch(feature){
+			case "PRIORITY_MANAGER:":
+				f = new File(parentFolder.getAbsolutePath()
+						+ "/src/it/polimi/template/controller/TripsPageController.java");
+				tag = "<tPrt>";
+				break;
+			case "CLOCK":
+				f = new File(parentFolder.getAbsolutePath()
+						+ "/src/it/polimi/template/controller/TripsPageController.java");
+				tag = "<tDelay>";
+				break;
+			case "TIMER_MONITOR":
+				f = new File(parentFolder.getAbsolutePath()
+						+ "/src/it/polimi/template/controller/MissionPageController.java");
+				tag = "<tSafe>";
+				break;
+			case "MISSION_REPEATER":
+				f = new File(parentFolder.getAbsolutePath()
+						+ "/src/it/polimi/template/controller/MissionPageController.java");
+				tag = "<mRep>";
+				break;
+			default:
+				break;
+		}
+		
+		String fileAsString = readFromFileToString(f);
+		fileAsString = fileAsString.replaceAll("\\"+tag, "true");
+		writeStringToFile(f, fileAsString);
+	}
+	
 	// This method reads the source File content and returns a String object
 	// containing that content.
 	private String readFromFileToString(File source) {
