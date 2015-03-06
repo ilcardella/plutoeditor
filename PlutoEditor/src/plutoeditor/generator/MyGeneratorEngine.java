@@ -6,12 +6,10 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -77,117 +75,73 @@ public class MyGeneratorEngine {
 	// This method looks for the tags in the fileToSave object and change them
 	// with the code generated from the model diagram
 	private void generateModelCodeInTemplateApp() {
-		FileInputStream fileInputStream = null;
-		FileOutputStream fileOutputStream = null;
-		String fileAsString = null; // String representation of the file
-		File modelFile = new File(parentFolder.getAbsolutePath()
-				+ "/src/it/polimi/template/controller/thread/MissionWorker.java");
 
-		try {
+		File modelFile = new File(
+				parentFolder.getAbsolutePath()
+						+ "/src/it/polimi/template/controller/thread/MissionWorker.java");
 
-			fileInputStream = new FileInputStream(modelFile);
+		String fileAsString = readFromFileToString(modelFile);
 
-			// Read the file with default code already generated
-			// and convert it in a String object
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					fileInputStream, "UTF-8"));
-			StringBuilder sb = new StringBuilder();
-			String l;
-			while ((l = br.readLine()) != null) {
-				sb.append(l);
-				sb.append('\n');
+		// Filling the tags in the template
+		List<Node> children = diagram.getChildrenNodes();
+		StringBuilder decStringBuilder = new StringBuilder();
+		StringBuilder exeStringBuilder = new StringBuilder();
+
+		// We need to know where the graph flow starts
+		Node firstNode = findFirstNode();
+
+		for (Node n : children) {
+			// If n is a MissionModifier create the class with custom code
+			if (n instanceof MissionModifier) {
+				generateMissionModifierClass((MissionModifier) n);
 			}
-			fileAsString = sb.toString();
-
-			br.close();
-			fileInputStream.close();
-
-			// Initialize output stream
-			fileOutputStream = new FileOutputStream(modelFile);
-
-			// Filling the tags in the template
-			List<Node> children = diagram.getChildrenNodes();
-			StringBuilder decStringBuilder = new StringBuilder();
-			StringBuilder exeStringBuilder = new StringBuilder();
-
-			// We need to know where the graph flow starts
-			Node firstNode = findFirstNode();
-
-			for (Node n : children) {
-				// If n is a MissionModifier create the class with custom code
-				if (n instanceof MissionModifier) {
-					generateMissionModifierClass((MissionModifier) n);
-				}
-				if (n instanceof GateFIFO) {
-					generateGateFIFOModelCode((GateFIFO) n);
-				}
-
-				// Create the lines to add in declaration space
-				String name = getClassNameFromNode(n);
-				String line = name + " " + name.toLowerCase() + " = new "
-						+ name + "(this);";
-				decStringBuilder.append(line);
-				decStringBuilder.append('\n');
-
-				// Create the lines to add in execution space
-				List<Connection> srcConn = n.getSourceConnections();
-				// for each outgoing connections
-				for (Connection c : srcConn) {
-					// These lines will register the observers of each block
-					exeStringBuilder.append(name.toLowerCase()
-							+ ".addObserver("
-							+ getClassNameFromNode(c.getTargetNode())
-									.toLowerCase() + ");");
-					exeStringBuilder.append('\n');
-				}
+			if (n instanceof GateFIFO) {
+				generateGatesModelCode((GateFIFO) n);
 			}
-			// This line will launch the first block
-			exeStringBuilder.append(getClassNameFromNode(firstNode)
-					.toLowerCase() + ".update(null, m);");
-
-			// Now we write the built strings in the destination file
-			fileAsString = fileAsString.replaceAll("\\<dec>",
-					decStringBuilder.toString());
-			fileAsString = fileAsString.replaceAll("\\<exe>",
-					exeStringBuilder.toString());
-
-			// Convert string to byte[] and write to the outputStream
-			byte[] fileStringInBytes = fileAsString.getBytes();
-			fileOutputStream.write(fileStringInBytes);
-
-		} catch (Exception e) {
-			System.out.println("Error writing generated code from model.");
-			e.printStackTrace();
-		} finally {
-
-			if (fileInputStream != null) {
-				try {
-					fileInputStream.close();
-				} catch (IOException e) {
-					System.out.println("Error closing the fileInputStream.");
-					e.printStackTrace();
-				}
+			if (n instanceof GateFunnel) {
+				generateGatesModelCode((GateFunnel) n);
 			}
-			if (fileOutputStream != null) {
-				try {
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch (IOException e) {
-					System.out.println("Error closing the outputStream.");
-					e.printStackTrace();
-				}
+
+			// Create the lines to add in declaration space
+			String name = getClassNameFromNode(n);
+			String line = name + " " + name.toLowerCase() + " = new " + name
+					+ "(this);";
+			decStringBuilder.append(line);
+			decStringBuilder.append('\n');
+
+			// Create the lines to add in execution space
+			List<Connection> srcConn = n.getSourceConnections();
+			// for each outgoing connections
+			for (Connection c : srcConn) {
+				// These lines will register the observers of each block
+				exeStringBuilder.append(name.toLowerCase() + ".addObserver("
+						+ getClassNameFromNode(c.getTargetNode()).toLowerCase()
+						+ ");");
+				exeStringBuilder.append('\n');
 			}
 		}
+		// This line will launch the first block
+		exeStringBuilder.append(getClassNameFromNode(firstNode).toLowerCase()
+				+ ".update(null, m);");
+
+		// Now we write the built strings in the destination file
+		fileAsString = fileAsString.replaceAll("\\<dec>",
+				decStringBuilder.toString());
+		fileAsString = fileAsString.replaceAll("\\<exe>",
+				exeStringBuilder.toString());
+
+		writeStringToFile(modelFile, fileAsString);
 	}
 
 	private void generateMissionModifierClass(MissionModifier n) {
 		// Generate the class in the model package
-		FileOutputStream fileOutputStream = null;
+		// FileOutputStream fileOutputStream = null;
 		String classString = n.getTemplateCode(); // String representation of
 													// the file
 		File classFile = new File(parentFolder.getAbsolutePath()
 				+ "/src/it/polimi/template/controller/block/" + n.getName()
 				+ ".java");
+
 		if (!classFile.exists()) {
 			classFile.getParentFile().mkdirs();
 			try {
@@ -204,26 +158,27 @@ public class MyGeneratorEngine {
 		// Replace <run> tag in classString with customcode
 		classString = classString.replaceAll("\\<run>", n.getCustomCode());
 
-		try {
-			// Write the classString in the file
-			fileOutputStream = new FileOutputStream(classFile);
-			byte[] classStringInBytes = classString.getBytes();
-			fileOutputStream.write(classStringInBytes);
-
-		} catch (IOException e) {
-			System.out.println("MissionModifier customCode NOT inserted!");
-			e.printStackTrace();
-		} finally {
-			if (fileOutputStream != null) {
-				try {
-					fileOutputStream.flush();
-					fileOutputStream.close();
-				} catch (IOException e) {
-					System.out.println("Error closing the outputStream.");
-					e.printStackTrace();
-				}
-			}
-		}
+		writeStringToFile(classFile, classString);
+		// try {
+		// // Write the classString in the file
+		// fileOutputStream = new FileOutputStream(classFile);
+		// byte[] classStringInBytes = classString.getBytes();
+		// fileOutputStream.write(classStringInBytes);
+		//
+		// } catch (IOException e) {
+		// System.out.println("MissionModifier customCode NOT inserted!");
+		// e.printStackTrace();
+		// } finally {
+		// if (fileOutputStream != null) {
+		// try {
+		// fileOutputStream.flush();
+		// fileOutputStream.close();
+		// } catch (IOException e) {
+		// System.out.println("Error closing the outputStream.");
+		// e.printStackTrace();
+		// }
+		// }
+		// }
 
 	}
 
@@ -286,23 +241,36 @@ public class MyGeneratorEngine {
 		return firstNode;
 	}
 
-	private void generateGateFIFOModelCode(GateFIFO n) {
-		FileOutputStream fileOutputStream = null;
-		FileInputStream fileInputStream = null;
+	private void generateGatesModelCode(Node n) {
+
+		File gate = null;
+
+		if (n instanceof GateFIFO)
+			gate = new File(parentFolder.getAbsolutePath()
+					+ "/src/it/polimi/template/controller/block/GateFIFO.java");
+		else if (n instanceof GateFunnel)
+			gate = new File(
+					parentFolder.getAbsolutePath()
+							+ "/src/it/polimi/template/controller/block/GateFunnel.java");
+
+		// We need to know how many incoming connections has the block
+		String number = "" + n.getTargetConnections().size();
+		String fileAsString = readFromFileToString(gate);
+		fileAsString = fileAsString.replaceAll("\\<num>", number);
+		writeStringToFile(gate, fileAsString);
+
+	}
+
+	// This method reads the source File content and returns a String object
+	// containing that content.
+	private String readFromFileToString(File source) {
 		String fileAsString = null;
-		
-		File modelFile = new File(parentFolder.getAbsolutePath()
-				+ "/src/it/polimi/template/controller/block/GateFIFO.java");
-		
-		List<Connection> conns = n.getTargetConnections();
-		String number = "" + conns.size();
 
 		try {
-			fileInputStream = new FileInputStream(modelFile);
+			FileInputStream fileInputStream = new FileInputStream(source);
 
-			BufferedReader br;
-			br = new BufferedReader(new InputStreamReader(fileInputStream,
-					"UTF-8"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					fileInputStream, "UTF-8"));
 
 			StringBuilder sb = new StringBuilder();
 			String l;
@@ -310,29 +278,34 @@ public class MyGeneratorEngine {
 				sb.append(l);
 				sb.append('\n');
 			}
+
 			fileAsString = sb.toString();
 
 			br.close();
 			fileInputStream.close();
-			
-		} catch (Exception e) {
-			System.out.println("Error reading from GateFIFO class");
-			e.printStackTrace();
+
+		} catch (IOException e) {
+			System.out.println("Exception while reading file "
+					+ source.getName() + " in a String");
 		}
-		
-		fileAsString = fileAsString.replaceAll("\\<num>", number);
-		
+
+		return fileAsString;
+	}
+
+	// This method write the "string" parameter in the target File
+	private void writeStringToFile(File target, String string) {
 		try {
-			
-			fileOutputStream = new FileOutputStream(modelFile);
-			byte[] fileStringInBytes = fileAsString.getBytes();
+
+			FileOutputStream fileOutputStream = new FileOutputStream(target);
+			byte[] fileStringInBytes = string.getBytes();
 			fileOutputStream.write(fileStringInBytes);
-			
+
 			fileOutputStream.flush();
 			fileOutputStream.close();
-			
+
 		} catch (IOException e) {
-			System.out.println("Error writing in GateFIFO class");
+			System.out.println("Error writing string to file "
+					+ target.getName());
 			e.printStackTrace();
 		}
 	}
