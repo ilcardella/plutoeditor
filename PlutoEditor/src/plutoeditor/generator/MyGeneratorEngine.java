@@ -102,16 +102,16 @@ public class MyGeneratorEngine {
 				generateGatesModelCode((GateFunnel) n);
 			}
 			if (n instanceof PriorityManager) {
-				enableConditinalFeature("PRIORITY_MANAGER");
+				enableConditinalFeature("PRIORITY_MANAGER", "true");
 			}
 			if (n instanceof MissionRepeater) {
-				enableConditinalFeature("MISSION_REPEATER");
+				enableConditinalFeature("MISSION_REPEATER", "true");
 			}
 			if (n instanceof Clock) {
-				enableConditinalFeature("CLOCK");
+				enableConditinalFeature("CLOCK", "true");
 			}
 			if (n instanceof TimerMonitor) {
-				enableConditinalFeature("TIMER_MONITOR");
+				enableConditinalFeature("TIMER_MONITOR", "true");
 			}
 
 			// Create the lines to add in declaration space
@@ -143,6 +143,13 @@ public class MyGeneratorEngine {
 				exeStringBuilder.toString());
 
 		writeStringToFile(modelFile, fileAsString);
+		
+		// If there are tags of the conditional features that were not replaced
+		// we set them to the default value (false)
+		enableConditinalFeature("PRIORITY_MANAGER", "false");
+		enableConditinalFeature("MISSION_REPEATER", "false");
+		enableConditinalFeature("CLOCK", "false");
+		enableConditinalFeature("TIMER_MONITOR", "false");
 	}
 
 	private void generateMissionModifierClass(MissionModifier n) {
@@ -251,13 +258,13 @@ public class MyGeneratorEngine {
 
 	}
 
-	private void enableConditinalFeature(String feature) {
+	private void enableConditinalFeature(String feature, String bool) {
 		
 		File f = null;
 		String tag = null;
 		
 		switch(feature){
-			case "PRIORITY_MANAGER:":
+			case "PRIORITY_MANAGER":
 				f = new File(parentFolder.getAbsolutePath()
 						+ "/src/it/polimi/template/controller/TripsPageController.java");
 				tag = "<tPrt>";
@@ -282,7 +289,7 @@ public class MyGeneratorEngine {
 		}
 		
 		String fileAsString = readFromFileToString(f);
-		fileAsString = fileAsString.replaceAll("\\"+tag, "true");
+		fileAsString = fileAsString.replaceAll("\\"+tag, bool);
 		writeStringToFile(f, fileAsString);
 	}
 	
