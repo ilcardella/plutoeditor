@@ -134,8 +134,6 @@ public class MyGeneratorEngine {
 	}
 
 	private void generateMissionModifierClass(MissionModifier n) {
-		// Generate the class in the model package
-		// FileOutputStream fileOutputStream = null;
 		String classString = n.getTemplateCode(); // String representation of
 													// the file
 		File classFile = new File(parentFolder.getAbsolutePath()
@@ -159,26 +157,6 @@ public class MyGeneratorEngine {
 		classString = classString.replaceAll("\\<run>", n.getCustomCode());
 
 		writeStringToFile(classFile, classString);
-		// try {
-		// // Write the classString in the file
-		// fileOutputStream = new FileOutputStream(classFile);
-		// byte[] classStringInBytes = classString.getBytes();
-		// fileOutputStream.write(classStringInBytes);
-		//
-		// } catch (IOException e) {
-		// System.out.println("MissionModifier customCode NOT inserted!");
-		// e.printStackTrace();
-		// } finally {
-		// if (fileOutputStream != null) {
-		// try {
-		// fileOutputStream.flush();
-		// fileOutputStream.close();
-		// } catch (IOException e) {
-		// System.out.println("Error closing the outputStream.");
-		// e.printStackTrace();
-		// }
-		// }
-		// }
 
 	}
 
