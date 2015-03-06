@@ -81,7 +81,7 @@ public class MyGeneratorEngine {
 		FileOutputStream fileOutputStream = null;
 		String fileAsString = null; // String representation of the file
 		File modelFile = new File(parentFolder.getAbsolutePath()
-				+ "/src/it/polimi/template/controller/thread/MyWorker.java");
+				+ "/src/it/polimi/template/controller/thread/MissionWorker.java");
 
 		try {
 
