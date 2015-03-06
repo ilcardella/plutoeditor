@@ -6,10 +6,12 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -107,14 +109,17 @@ public class MyGeneratorEngine {
 			List<Node> children = diagram.getChildrenNodes();
 			StringBuilder decStringBuilder = new StringBuilder();
 			StringBuilder exeStringBuilder = new StringBuilder();
-			// TODO cambiare, ora il primo nodo è quello che ha in ingresso il blocco start
-			Node firstNode = children.get(0); // Usually the first node is the
-												// first in the list
+
+			// We need to know where the graph flow starts
+			Node firstNode = findFirstNode();
 
 			for (Node n : children) {
 				// If n is a MissionModifier create the class with custom code
 				if (n instanceof MissionModifier) {
 					generateMissionModifierClass((MissionModifier) n);
+				}
+				if (n instanceof GateFIFO) {
+					generateGateFIFOModelCode((GateFIFO) n);
 				}
 
 				// Create the lines to add in declaration space
@@ -134,13 +139,6 @@ public class MyGeneratorEngine {
 							+ getClassNameFromNode(c.getTargetNode())
 									.toLowerCase() + ");");
 					exeStringBuilder.append('\n');
-				}
-
-				// TODO questo if, dopo aver fatto il todo sopra, non serve più
-				// looking for the first node
-				if (n.getTargetConnections() == null
-						|| n.getTargetConnections().size() == 0) {
-					firstNode = n;
 				}
 			}
 			// This line will launch the first block
@@ -199,19 +197,19 @@ public class MyGeneratorEngine {
 				e.printStackTrace();
 			}
 		}
-		
+
 		// Replace <name> tag in classString with the name of the class
 		classString = classString.replaceAll("\\<name>", n.getName());
 
 		// Replace <run> tag in classString with customcode
 		classString = classString.replaceAll("\\<run>", n.getCustomCode());
-		
+
 		try {
 			// Write the classString in the file
 			fileOutputStream = new FileOutputStream(classFile);
 			byte[] classStringInBytes = classString.getBytes();
 			fileOutputStream.write(classStringInBytes);
-			
+
 		} catch (IOException e) {
 			System.out.println("MissionModifier customCode NOT inserted!");
 			e.printStackTrace();
@@ -273,6 +271,70 @@ public class MyGeneratorEngine {
 
 			}
 		});
+	}
+
+	// return the node that has an incoming connection from the Start block
+	private Node findFirstNode() {
+		Node firstNode = null;
+		List<Node> children = diagram.getChildrenNodes();
+		for (Node n : children) {
+			if (n.getName().equals("Start")) {
+				List<Connection> conns = n.getSourceConnections();
+				firstNode = conns.get(0).getTargetNode();
+			}
+		}
+		return firstNode;
+	}
+
+	private void generateGateFIFOModelCode(GateFIFO n) {
+		FileOutputStream fileOutputStream = null;
+		FileInputStream fileInputStream = null;
+		String fileAsString = null;
+		
+		File modelFile = new File(parentFolder.getAbsolutePath()
+				+ "/src/it/polimi/template/controller/block/GateFIFO.java");
+		
+		List<Connection> conns = n.getTargetConnections();
+		String number = "" + conns.size();
+
+		try {
+			fileInputStream = new FileInputStream(modelFile);
+
+			BufferedReader br;
+			br = new BufferedReader(new InputStreamReader(fileInputStream,
+					"UTF-8"));
+
+			StringBuilder sb = new StringBuilder();
+			String l;
+			while ((l = br.readLine()) != null) {
+				sb.append(l);
+				sb.append('\n');
+			}
+			fileAsString = sb.toString();
+
+			br.close();
+			fileInputStream.close();
+			
+		} catch (Exception e) {
+			System.out.println("Error reading from GateFIFO class");
+			e.printStackTrace();
+		}
+		
+		fileAsString = fileAsString.replaceAll("\\<num>", number);
+		
+		try {
+			
+			fileOutputStream = new FileOutputStream(modelFile);
+			byte[] fileStringInBytes = fileAsString.getBytes();
+			fileOutputStream.write(fileStringInBytes);
+			
+			fileOutputStream.flush();
+			fileOutputStream.close();
+			
+		} catch (IOException e) {
+			System.out.println("Error writing in GateFIFO class");
+			e.printStackTrace();
+		}
 	}
 
 } // End
