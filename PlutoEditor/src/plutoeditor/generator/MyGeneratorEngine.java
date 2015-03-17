@@ -17,6 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -102,16 +103,16 @@ public class MyGeneratorEngine {
 				generateGatesModelCode((GateFunnel) n);
 			}
 			if (n instanceof PriorityManager) {
-				enableConditinalFeature("PRIORITY_MANAGER", "true");
+				enableConditionalFeature("PRIORITY_MANAGER", "true");
 			}
 			if (n instanceof MissionRepeater) {
-				enableConditinalFeature("MISSION_REPEATER", "true");
+				enableConditionalFeature("MISSION_REPEATER", "true");
 			}
 			if (n instanceof Clock) {
-				enableConditinalFeature("CLOCK", "true");
+				enableConditionalFeature("CLOCK", "true");
 			}
 			if (n instanceof TimerMonitor) {
-				enableConditinalFeature("TIMER_MONITOR", "true");
+				enableConditionalFeature("TIMER_MONITOR", "true");
 			}
 
 			// Create the lines to add in declaration space
@@ -146,10 +147,10 @@ public class MyGeneratorEngine {
 		
 		// If there are tags of the conditional features that were not replaced
 		// we set them to the default value (false)
-		enableConditinalFeature("PRIORITY_MANAGER", "false");
-		enableConditinalFeature("MISSION_REPEATER", "false");
-		enableConditinalFeature("CLOCK", "false");
-		enableConditinalFeature("TIMER_MONITOR", "false");
+		enableConditionalFeature("PRIORITY_MANAGER", "false");
+		enableConditionalFeature("MISSION_REPEATER", "false");
+		enableConditionalFeature("CLOCK", "false");
+		enableConditionalFeature("TIMER_MONITOR", "false");
 	}
 
 	private void generateMissionModifierClass(MissionModifier n) {
@@ -197,30 +198,9 @@ public class MyGeneratorEngine {
 	// Show message in a JDialog with an OK button
 	private void displayNotification(final String message) {
 		SwingUtilities.invokeLater(new Runnable() {
-
 			@Override
 			public void run() {
-				final JDialog dialog = new JDialog();
-				JPanel messagePane = new JPanel();
-				messagePane.add(new JLabel(message));
-				dialog.getContentPane().add(messagePane);
-				JPanel buttonPane = new JPanel();
-				JButton button = new JButton("OK");
-				buttonPane.add(button);
-				button.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						dialog.setVisible(false);
-						dialog.dispose();
-					}
-				});
-				dialog.getContentPane().add(buttonPane, BorderLayout.SOUTH);
-				dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-				dialog.pack();
-				dialog.setLocationRelativeTo(null);
-				dialog.setVisible(true);
-
+				JOptionPane.showMessageDialog(null, message);
 			}
 		});
 	}
@@ -258,7 +238,7 @@ public class MyGeneratorEngine {
 
 	}
 
-	private void enableConditinalFeature(String feature, String bool) {
+	private void enableConditionalFeature(String feature, String bool) {
 		
 		File f = null;
 		String tag = null;
